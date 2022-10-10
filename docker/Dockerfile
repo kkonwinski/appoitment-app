@@ -8,7 +8,7 @@ RUN apt update \
     && docker-php-ext-configure zip \
     && docker-php-ext-install zip
 
-WORKDIR /var/www/appointment_app
+WORKDIR /var/www/appoitment_app
 
 
 # create docker sudo user
