@@ -1,8 +1,8 @@
-version: '3.8'
+version: '3.7'
 services:
   database:
     container_name: ${PROJECT_NAME}_database
-    image: mariadb:10.9.2
+    image: mariadb:10
     restart: always
     environment:
       MARIADB_ALLOW_EMPTY_PASSWORD: "true"
