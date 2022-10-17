@@ -11,7 +11,7 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 import $ from 'jquery';
-
+import '@popperjs';
 // $(document).ready(function () {
 //     //click evrywhere on the page and show alert
 //     $(document).click(function () {
