@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\CompanyAddtionalInfoRepository;
+use App\Repository\CompanyAdditionalInfoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CompanyAddtionalInfoRepository::class)]
+#[ORM\Entity(repositoryClass: CompanyAdditionalInfoRepository::class)]
 class CompanyAdditionalInfo
 {
     #[ORM\Id]
