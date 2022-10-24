@@ -1,0 +1,5 @@
+admin:
+  sidebar:
+    manage_employee: Zarządzaj pracownikami
+    employee_work_schedule: Harmonogram pracy
+    employee_work_schedule_manage: Zarządzaj harmonogramem
