@@ -37,25 +37,18 @@ class AppFixtures extends Fixture
             $company->setName($this->faker->company);
             $manager->persist($company);
             for ($j = 0; $j < 10; $j++) {
+                $user = new User();
+                $user->setEmail($this->faker->email);
+                $user->setPassword($this->hasher->hashPassword($user, '123456'));
+                $user->setFirstname($this->faker->firstName);
+                $user->setLastname($this->faker->lastName);
                 if ($j === 0) {
-                    $user = new User();
-                    $user->setEmail($this->faker->email);
-                    $user->setPassword($this->hasher->hashPassword($user, '123456'));
-                    $user->setFirstname($this->faker->firstName);
-                    $user->setLastname($this->faker->lastName);
                     $user->setRoles($roles);
-                    $user->setCompany($company);
-                    $manager->persist($user);
                 } else {
-                    $user = new User();
-                    $user->setEmail($this->faker->email);
-                    $user->setPassword($this->hasher->hashPassword($user, '123456'));
-                    $user->setFirstname($this->faker->firstName);
-                    $user->setLastname($this->faker->lastName);
                     $user->setRoles(['ROLE_EMPLOYEE']);
-                    $user->setCompany($company);
-                    $manager->persist($user);
                 }
+                $user->setCompany($company);
+                $manager->persist($user);
 
             }
             for ($j = 0; $j < random_int(1, 2); $j++) {
