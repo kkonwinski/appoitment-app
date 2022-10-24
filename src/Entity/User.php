@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -64,6 +66,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 128, unique: true)]
     #[Gedmo\Slug(fields: ['firstname', 'lastname'])]
     private ?string $slug = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: EmployeeSchedule::class, orphanRemoval: true)]
+    private Collection $employeeSchedules;
+
+    public function __construct()
+    {
+        $this->employeeSchedules = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -192,6 +202,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EmployeeSchedule>
+     */
+    public function getEmployeeSchedules(): Collection
+    {
+        return $this->employeeSchedules;
+    }
+
+    public function addEmployeeSchedule(EmployeeSchedule $employeeSchedule): self
+    {
+        if (!$this->employeeSchedules->contains($employeeSchedule)) {
+            $this->employeeSchedules->add($employeeSchedule);
+            $employeeSchedule->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmployeeSchedule(EmployeeSchedule $employeeSchedule): self
+    {
+        if ($this->employeeSchedules->removeElement($employeeSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($employeeSchedule->getUser() === $this) {
+                $employeeSchedule->setUser(null);
+            }
+        }
 
         return $this;
     }
