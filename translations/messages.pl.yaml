@@ -3,3 +3,13 @@ admin:
     manage_employee: Zarządzaj pracownikami
     employee_work_schedule: Harmonogram pracy
     employee_work_schedule_manage: Zarządzaj harmonogramem
+entity:
+  employee_schedule:
+    not_blank: To pole nie może być puste!
+    yes: Tak
+    no: Nie
+    day_to_greater_than_day_from: Data początkowa nie może być większa niż data końcowa!
+    day_from_greater_than_day_to: Data końcowa nie może być mniejsza niż data początkowa!
+    time_to_greater_than_time_from: Godzina zakończenia nie może być wcześniejsza niż godzina rozpoczęcia!
+    time_from_greater_than_time_to: Godzina rozpoczęcia nie może być późniejsza niż godzina zakończenia!
+    time_from_greater_than_time_now: Godzina rozpoczęcia nie może być wcześniejsza niż aktualna godzina!

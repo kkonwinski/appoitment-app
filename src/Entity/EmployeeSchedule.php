@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity
@@ -39,18 +41,25 @@ class EmployeeSchedule
     private ?User $user = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message: 'entity.employee_schedule.not_blank')]
+    #[Assert\Callback(callback: [self::class, 'validateDay'])]
     private ?\DateTimeInterface $dayFrom = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Assert\Callback(callback: [self::class, 'validateDay'])]
     private ?\DateTimeInterface $dayTo = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[Assert\NotBlank(message: 'entity.employee_schedule.not_blank')]
+    #[Assert\Callback(callback: [self::class, 'validateTime'])]
     private ?\DateTimeInterface $timeFrom = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    #[Assert\Callback(callback: [self::class, 'validateTime'])]
     private ?\DateTimeInterface $timeTo = null;
 
     #[ORM\Column]
+    #[Assert\Choice(['entity.employee_schedule.yes', 'entity.employee_schedule.no'])]
     private ?bool $repeatInfinity = false;
 
     public function getId(): ?int
@@ -128,5 +137,43 @@ class EmployeeSchedule
         $this->repeatInfinity = $repeatInfinity;
 
         return $this;
+    }
+
+    //create function check if dayTo is greater than dayFrom, if not add violation
+    public function validateDay(ExecutionContextInterface $context, $payload): void
+    {
+        if ($this->dayTo < $this->dayFrom) {
+            $context->buildViolation('entity.employee_schedule.day_to_greater_than_day_from')
+                ->atPath('dayTo')
+                ->addViolation();
+        }
+        //dayFrom is no grater than dayTo, if not add violation
+        if ($this->dayFrom > $this->dayTo) {
+            $context->buildViolation('entity.employee_schedule.day_from_greater_than_day_to')
+                ->atPath('dayFrom')
+                ->addViolation();
+        }
+    }
+
+    //create function check if timeTo is greater than timeFrom, if not add violation
+    public function validateTime(ExecutionContextInterface $context, $payload): void
+    {
+        if ($this->timeTo < $this->timeFrom) {
+            $context->buildViolation('entity.employee_schedule.time_to_greater_than_time_from')
+                ->atPath('timeTo')
+                ->addViolation();
+        }
+        //timeFrom is no grater than timeTo, if not add violation
+        if ($this->timeFrom > $this->timeTo) {
+            $context->buildViolation('entity.employee_schedule.time_from_greater_than_time_to')
+                ->atPath('timeFrom')
+                ->addViolation();
+        }
+        //timeFrom mus be bigger than time now
+        if ($this->timeFrom < new \DateTime('now')) {
+            $context->buildViolation('entity.employee_schedule.time_from_greater_than_time_now')
+                ->atPath('timeFrom')
+                ->addViolation();
+        }
     }
 }
