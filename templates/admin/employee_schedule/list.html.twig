@@ -1,0 +1,39 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ 'entity.employee_schedule.view.list.title'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'entity.employee_schedule.view.list.title'|trans }}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+<th>Employee Fullname</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {{ dump(employees) }}
+        {% for employee in employees %}
+            <tr>
+                <td>{{ employee.id }}</td>
+                <td>{{ employee.employeeSchedules.title }}</td>
+                <td>{{ employee.createdAt ? employee.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ employee.updatedAt ? employee.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ employee.deletedAt ? employee.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('admin_employee_schedule_show', {'id': employee.slug}) }}">show</a>
+                    <a href="{{ path('admin_employee_schedule_edit', {'id': employee.slug}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">{{ 'entity.employee_schedule.view.no_records_found'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_employee_schedule_new') }}">Create new</a>
+{% endblock %}

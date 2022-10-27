@@ -6,10 +6,20 @@ admin:
 entity:
   employee_schedule:
     not_blank: To pole nie może być puste!
-    yes: Tak
-    no: Nie
-    day_to_greater_than_day_from: Data początkowa nie może być większa niż data końcowa!
-    day_from_greater_than_day_to: Data końcowa nie może być mniejsza niż data początkowa!
-    time_to_greater_than_time_from: Godzina zakończenia nie może być wcześniejsza niż godzina rozpoczęcia!
-    time_from_greater_than_time_to: Godzina rozpoczęcia nie może być późniejsza niż godzina zakończenia!
-    time_from_greater_than_time_now: Godzina rozpoczęcia nie może być wcześniejsza niż aktualna godzina!
+    assert:
+      yes: Tak
+      no: Nie
+      day_to_greater_than_day_from: Data początkowa nie może być większa niż data końcowa!
+      day_from_greater_than_day_to: Data końcowa nie może być mniejsza niż data początkowa!
+      time_to_greater_than_time_from: Godzina zakończenia nie może być wcześniejsza niż godzina rozpoczęcia!
+      time_from_greater_than_time_to: Godzina rozpoczęcia nie może być późniejsza niż godzina zakończenia!
+      time_from_greater_than_time_now: Godzina rozpoczęcia nie może być wcześniejsza niż aktualna godzina!
+    view:
+      no_records_found: Brak rekordów
+      list:
+        title: Harmonogram pracy
+view:
+  edit: Edytuj
+  delete: Usuń
+  save: Zapisz
+dupa: dupa

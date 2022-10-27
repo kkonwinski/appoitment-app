@@ -41,26 +41,26 @@ class EmployeeSchedule
     private ?User $user = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: 'entity.employee_schedule.not_blank')]
-    #[Assert\Callback(callback: [self::class, 'validateDay'])]
+    #[Assert\NotBlank(message: 'entity.employee_schedule.assert.not_blank')]
     private ?\DateTimeInterface $dayFrom = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    #[Assert\Callback(callback: [self::class, 'validateDay'])]
     private ?\DateTimeInterface $dayTo = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    #[Assert\NotBlank(message: 'entity.employee_schedule.not_blank')]
-    #[Assert\Callback(callback: [self::class, 'validateTime'])]
+    #[Assert\NotBlank(message: 'entity.employee_schedule.assert.not_blank')]
     private ?\DateTimeInterface $timeFrom = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    #[Assert\Callback(callback: [self::class, 'validateTime'])]
     private ?\DateTimeInterface $timeTo = null;
 
     #[ORM\Column]
-    #[Assert\Choice(['entity.employee_schedule.yes', 'entity.employee_schedule.no'])]
+    #[Assert\Choice(['entity.employee_schedule.assert.yes', 'entity.employee_schedule.assert.no'])]
     private ?bool $repeatInfinity = false;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "entity.employee_schedule.not_blank")]
+    private ?string $title = null;
 
     public function getId(): ?int
     {
@@ -140,40 +140,60 @@ class EmployeeSchedule
     }
 
     //create function check if dayTo is greater than dayFrom, if not add violation
+    #[Assert\Callback]
     public function validateDay(ExecutionContextInterface $context, $payload): void
     {
         if ($this->dayTo < $this->dayFrom) {
-            $context->buildViolation('entity.employee_schedule.day_to_greater_than_day_from')
+            $context->buildViolation('entity.employee_schedule.assert.day_to_greater_than_day_from')
+                ->setTranslationDomain('messages')
                 ->atPath('dayTo')
                 ->addViolation();
         }
         //dayFrom is no grater than dayTo, if not add violation
         if ($this->dayFrom > $this->dayTo) {
-            $context->buildViolation('entity.employee_schedule.day_from_greater_than_day_to')
+            $context->buildViolation('entity.employee_schedule.assert.day_from_greater_than_day_to')
+                ->setTranslationDomain('messages')
                 ->atPath('dayFrom')
                 ->addViolation();
         }
     }
 
     //create function check if timeTo is greater than timeFrom, if not add violation
+    #[Assert\Callback]
     public function validateTime(ExecutionContextInterface $context, $payload): void
     {
         if ($this->timeTo < $this->timeFrom) {
-            $context->buildViolation('entity.employee_schedule.time_to_greater_than_time_from')
+            $context->buildViolation('entity.employee_schedule.assert.time_to_greater_than_time_from')
+                ->setTranslationDomain('messages')
                 ->atPath('timeTo')
                 ->addViolation();
         }
         //timeFrom is no grater than timeTo, if not add violation
         if ($this->timeFrom > $this->timeTo) {
-            $context->buildViolation('entity.employee_schedule.time_from_greater_than_time_to')
+            $context->buildViolation('entity.employee_schedule.assert.time_from_greater_than_time_to')
+                ->setTranslationDomain('messages')
                 ->atPath('timeFrom')
                 ->addViolation();
         }
         //timeFrom mus be bigger than time now
         if ($this->timeFrom < new \DateTime('now')) {
-            $context->buildViolation('entity.employee_schedule.time_from_greater_than_time_now')
+            $context->buildViolation('entity.employee_schedule.assert.time_from_greater_than_time_now')
+                ->setTranslationDomain('messages')
                 ->atPath('timeFrom')
                 ->addViolation();
         }
     }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
 }
