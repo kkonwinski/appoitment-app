@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\EmployeeSchedule;
+use App\Entity\User;
 use App\Form\EmployeeScheduleType;
 use App\Repository\EmployeeScheduleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,8 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('admin/employee/schedule', name: 'admin_employee_schedule_')]
 class EmployeeScheduleController extends AbstractController
 {
-    #[Route('/', name: 'list', methods: ['GET'])]
-    public function index(EmployeeScheduleRepository $employeeScheduleRepository): Response
+    #[Route('/list/{slug}', name: 'list', methods: ['GET'])]
+    public function index(
+        User $user,
+        EmployeeScheduleRepository $employeeScheduleRepository
+    ): Response
     {
         return $this->render('admin/employee_schedule/list.html.twig', [
             'employee_schedules' => $employeeScheduleRepository->findAll(),

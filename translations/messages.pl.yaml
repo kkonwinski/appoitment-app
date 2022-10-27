@@ -1,9 +1,12 @@
 admin:
   sidebar:
     manage_employee: Zarządzaj pracownikami
+    employees: Pracownicy
     employee_work_schedule: Harmonogram pracy
     employee_work_schedule_manage: Zarządzaj harmonogramem
 entity:
+  user:
+    fullname: Imię i Nazwisko
   employee_schedule:
     not_blank: To pole nie może być puste!
     assert:

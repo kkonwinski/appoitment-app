@@ -36,11 +36,11 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#employeeManage"
            aria-expanded="true" aria-controls="employeeManage">
             <i class="fa fa-calendar"></i>
-            <span>{{ 'admin.sidebar.employee_work_schedule'|trans }}</span>
+            <span>{{ 'admin.sidebar.employees'|trans }}</span>
         </a>
         <div id="employeeManage" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ path('admin_employee_schedule_list') }}">{{ 'admin.sidebar.employee_work_schedule_manage'|trans }}</a>
+                <a class="collapse-item" href="{{ path('admin_employee_list') }}">{{ 'admin.sidebar.manage_employee'|trans }}</a>
 {#                <a class="collapse-item" href="cards.html">Cards</a>#}
             </div>
         </div>

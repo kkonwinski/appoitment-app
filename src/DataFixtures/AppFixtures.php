@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
     {
         $roles = ['ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_OWNER'];
 
-        $this->faker = Factory::create();
+        $this->faker = Factory::create('pl_PL');
 
         for ($i = 0; $i < 10; $i++) {
             $company = new Company();
@@ -120,6 +120,7 @@ class AppFixtures extends Fixture
             }
         }
 
+        $manager->flush();
         $manager->flush();
     }
 
