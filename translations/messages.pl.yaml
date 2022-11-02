@@ -25,4 +25,15 @@ view:
   edit: Edytuj
   delete: Usuń
   save: Zapisz
-dupa: dupa
+login:
+  password: Hasło
+  email: Wprowadz adres e-mail
+  login_btn: Zaloguj
+  login_title: Zaloguj się do panelu administracyjnego
+  login_with_google: Zaloguj się przez Google
+  login_with_facebook: Zaloguj się przez Facebook
+logout:
+  ready_to_leave: Czy na pewno chcesz się wylogować?
+  logout_btn: Wyloguj
+  cancel_btn: Anuluj
+  modal_description: Jeśli wylogujesz się, nie będziesz mógł ponownie uzyskać dostępu do tego konta, dopóki nie zalogujesz się ponownie.
