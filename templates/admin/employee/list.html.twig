@@ -1,0 +1,37 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ 'admin.sidebar.manage_employee'|trans }}{% endblock %}
+
+{% block body %}
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>{{ 'entity.user.fullname'|trans }}</th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ employee.fullname }}</td>
+
+                    <td>
+                        <a href="{{ path('admin_employee_schedule_list',{'slug':employee.slug}) }}" class="btn btn-outline-primary">{{ 'entity.employee_schedule.view.list.title'|trans }}</a>
+
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">{{ 'entity.employee_schedule.view.no_records_found'|trans }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation">
+        {{ knp_pagination_render(employees) }}
+    </div>
+{% endblock %}

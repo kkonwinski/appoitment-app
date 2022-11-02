@@ -27,6 +27,7 @@
     <!-- Nav Item - Pages Collapse Menu -->
 
     <!-- Heading -->
+    {% if is_granted('ROLE_ADMIN', 'ROLE_OWNER') %}
     <div class="sidebar-heading">
         {{ 'admin.sidebar.manage_employee'|trans }}
     </div>
@@ -35,16 +36,16 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#employeeManage"
            aria-expanded="true" aria-controls="employeeManage">
             <i class="fa fa-calendar"></i>
-            <span>{{ 'admin.sidebar.employee_work_schedule'|trans }}</span>
+            <span>{{ 'admin.sidebar.employees'|trans }}</span>
         </a>
         <div id="employeeManage" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">{{ 'admin.sidebar.employee_work_schedule_manage'|trans }}</a>
+                <a class="collapse-item" href="{{ path('admin_employee_list') }}">{{ 'admin.sidebar.manage_employee'|trans }}</a>
 {#                <a class="collapse-item" href="cards.html">Cards</a>#}
             </div>
         </div>
     </li>
-
+{% endif %}
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"

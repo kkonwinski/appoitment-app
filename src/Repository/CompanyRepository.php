@@ -38,6 +38,15 @@ class CompanyRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+//find users belongs to company
+    public function findUsersByCompany($company)
+    {
+        return $this->createQueryBuilder('c')
+        ->where('c = :company')
+        ->setParameter('company', $company)
+        ->getQuery()
+        ->getResult();
+    }
 
 //    /**
 //     * @return Company[] Returns an array of Company objects

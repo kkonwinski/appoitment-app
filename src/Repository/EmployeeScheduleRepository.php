@@ -38,6 +38,19 @@ class EmployeeScheduleRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+//find all employee schedules by company by user
+    public function findEmployeeSchedulesByCompany($company)
+    {
+        return $this->createQueryBuilder('es')
+        ->leftJoin('es.user', 'u')
+        ->leftJoin('u.company', 'c')
+        ->where('c = :company')
+        ->andWhere('u.roles = :role')
+        ->setParameter('company', $company)
+        ->setParameter('role', "ROLE_EMPLOYEE")
+        ->getQuery()
+        ->getResult();
+    }
 
 //    /**
 //     * @return EmployeeSchedule[] Returns an array of EmployeeSchedule objects

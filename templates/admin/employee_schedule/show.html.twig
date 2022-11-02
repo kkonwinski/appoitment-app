@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmployeeSchedule{% endblock %}
+
+{% block body %}
+    <h1>EmployeeSchedule</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ employee_schedule.id }}</td>
+            </tr>
+            <tr>
+                <th>DayFrom</th>
+                <td>{{ employee_schedule.dayFrom ? employee_schedule.dayFrom|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DayTo</th>
+                <td>{{ employee_schedule.dayTo ? employee_schedule.dayTo|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>TimeFrom</th>
+                <td>{{ employee_schedule.timeFrom ? employee_schedule.timeFrom|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>TimeTo</th>
+                <td>{{ employee_schedule.timeTo ? employee_schedule.timeTo|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>RepeatInfinity</th>
+                <td>{{ employee_schedule.repeatInfinity ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ employee_schedule.createdAt ? employee_schedule.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ employee_schedule.updatedAt ? employee_schedule.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ employee_schedule.deletedAt ? employee_schedule.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_employee_schedule_index') }}">back to list</a>
+
+    <a href="{{ path('app_employee_schedule_edit', {'id': employee_schedule.id}) }}">edit</a>
+
+    {{ include('employee_schedule/_delete_form.html.twig') }}
+{% endblock %}
