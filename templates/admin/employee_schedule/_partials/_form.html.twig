@@ -1,4 +1,10 @@
 {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+        {{ form_row(form.title) }}
+        {{ form_row(form.dayFrom) }}
+        {{ form_row(form.dayTo) }}
+        {{ form_row(form.timeFrom) }}
+        {{ form_row(form.timeTo) }}
+        {{ form_row(form.repeatInfinity) }}
+
+<button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\EmployeeSchedule;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -51,6 +52,18 @@ class EmployeeScheduleRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     }
+
+
+    public function findEmployeeSchedulesByUser(User $user)
+    {
+        return $this->createQueryBuilder('es')
+        ->leftJoin('es.user', 'u')
+        ->where('u = :user')
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult();
+    }
+
 
 //    /**
 //     * @return EmployeeSchedule[] Returns an array of EmployeeSchedule objects

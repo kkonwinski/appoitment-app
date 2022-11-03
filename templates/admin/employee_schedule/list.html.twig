@@ -2,38 +2,21 @@
 
 {% block title %}{{ 'entity.employee_schedule.view.list.title'|trans }}{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('admin_boostrap/css/jquery-ui.min.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('admin_boostrap/css/jquery.timepicker.min.css') }}">
+
+{% endblock %}
+
 {% block body %}
-    <h1>{{ 'entity.employee_schedule.view.list.title'|trans }}</h1>
+    {{ include('admin/employee_schedule/_partials/_form.html.twig') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('admin_boostrap/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('admin_boostrap/jquery.timepicker.min.js') }}"></script>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-<th>Employee Fullname</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        {{ dump(employees) }}
-        {% for employee in employees %}
-            <tr>
-                <td>{{ employee.id }}</td>
-                <td>{{ employee.employeeSchedules.title }}</td>
-                <td>{{ employee.createdAt ? employee.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ employee.updatedAt ? employee.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ employee.deletedAt ? employee.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('admin_employee_schedule_show', {'id': employee.slug}) }}">show</a>
-                    <a href="{{ path('admin_employee_schedule_edit', {'id': employee.slug}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">{{ 'entity.employee_schedule.view.no_records_found'|trans }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('admin_employee_schedule_new') }}">Create new</a>
+    <script src="{{ asset('custom/js/datepicker.js') }}"></script>
 {% endblock %}

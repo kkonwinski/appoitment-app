@@ -10,18 +10,47 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('admin/employee/schedule', name: 'admin_employee_schedule_')]
 class EmployeeScheduleController extends AbstractController
 {
-    #[Route('/list/{slug}', name: 'list', methods: ['GET'])]
+    #[Route('/list/{slug}', name: 'list', methods: ['GET', 'POST'])]
     public function index(
         User $user,
-        EmployeeScheduleRepository $employeeScheduleRepository
-    ): Response
-    {
+        EmployeeScheduleRepository $employeeScheduleRepository,
+        Request $request,
+        ValidatorInterface $validator
+    ): Response {
+        /**  @var $employeeSchedule EmployeeSchedule */
+        $employeeSchedule = $employeeScheduleRepository->findEmployeeSchedulesByUser($user);
+//if employeeSchedule is null, create empty EmployeeSchedule entity object
+
+        if (!$employeeSchedule) {
+            $employeeSchedule = new EmployeeSchedule();
+        }
+        $form = $this->createForm(
+            EmployeeScheduleType::class,
+            $employeeSchedule
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //transform data from form to entity
+//            $employeeSchedule->setTitle($employeeScheduleForm->get('title')->getData());
+//            $employeeSchedule->setDayFrom($employeeScheduleForm->get('dayFrom')->getData());
+//            $employeeSchedule->setDayTo($employeeScheduleForm->get('dayTo')->getData());
+//            $employeeSchedule->setTimeFrom($employeeScheduleForm->get('timeFrom')->getData());
+//            $employeeSchedule->setTimeTo($employeeScheduleForm->get('timeTo')->getData());
+//            $employeeSchedule->setRepeatInfinity($employeeScheduleForm->get('repeatInfinity')->getData());
+//            $employeeSchedule->setUser($user);
+
+            $employeeScheduleRepository->save($employeeSchedule, true);
+
+            return $this->redirectToRoute('admin_employee_schedule_list', [], Response::HTTP_SEE_OTHER);
+        }
         return $this->render('admin/employee_schedule/list.html.twig', [
-            'employee_schedules' => $employeeScheduleRepository->findAll(),
+            'form' => $form->createView(),
         ]);
     }
 

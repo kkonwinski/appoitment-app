@@ -41,6 +41,7 @@ class EmployeeSchedule
     private ?User $user = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotNull]
     #[Assert\NotBlank(message: 'entity.employee_schedule.assert.not_blank')]
     private ?\DateTimeInterface $dayFrom = null;
 
@@ -84,7 +85,7 @@ class EmployeeSchedule
         return $this->dayFrom;
     }
 
-    public function setDayFrom(\DateTimeInterface $dayFrom): self
+    public function setDayFrom(?\DateTimeInterface $dayFrom): self
     {
         $this->dayFrom = $dayFrom;
 
@@ -108,7 +109,7 @@ class EmployeeSchedule
         return $this->timeFrom;
     }
 
-    public function setTimeFrom(\DateTimeInterface $timeFrom): self
+    public function setTimeFrom(?\DateTimeInterface $timeFrom): self
     {
         $this->timeFrom = $timeFrom;
 

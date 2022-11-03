@@ -15,21 +15,50 @@ class EmployeeScheduleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $scheduleEmployee = $options['data'];
+
         $builder
-            ->add('title', TextType::class)
-            ->add('dayFrom', DateType::class)
-            ->add('dayTo', DateType::class)
-            ->add('timeFrom', TimeType::class)
-            ->add('timeTo', TimeType::class)
-            ->add('repeatInfinity', CheckboxType::class)
-            ->add('user')
-        ;
+            ->add('title', TextType::class, [
+                    'required' => true
+                ])
+            ->add('dayFrom', DateType::class, [
+                'required' => true,
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => ['class' => 'js-datepicker'],
+                'data' => $scheduleEmployee ? $scheduleEmployee->getDayFrom() : null,
+
+            ])
+            ->add('dayTo', DateType::class, [
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => ['class' => 'js-datepicker'],
+                'data' => $scheduleEmployee ? $scheduleEmployee->getDayTo() : null
+            ])
+            ->add('timeFrom', TimeType::class, [
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => ['class' => 'js-timepicker'],
+                'data' => $scheduleEmployee ? $scheduleEmployee->getTimeFrom() : null,
+                'required' => true
+            ])
+            ->add('timeTo', TimeType::class, [
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => ['class' => 'js-timepicker'],
+                'data' => $scheduleEmployee ? $scheduleEmployee->getTimeTo() : null
+            ])
+            /** TODO poprawić błąd po wysyłce formularza  */
+            ->add('repeatInfinity', CheckboxType::class, [
+                'required' => false,
+                'data' => $scheduleEmployee ? $scheduleEmployee->isRepeatInfinity() : false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => EmployeeSchedule::class,
+            'data' => EmployeeSchedule::class,
         ]);
     }
 }
