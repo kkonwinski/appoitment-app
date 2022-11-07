@@ -537,6 +537,38 @@
         <source>Please enter a valid week.</source>
         <target>Proszę wybrać prawidłowy tydzień.</target>
       </trans-unit>
+      <trans-unit id="a7AcAPo" resname="entity.employee_schedule.assert.not_blank">
+        <source>entity.employee_schedule.assert.not_blank</source>
+        <target>To pole nie może być puste!</target>
+      </trans-unit>
+      <trans-unit id="i8odLRr" resname="entity.employee_schedule.assert.yes">
+        <source>entity.employee_schedule.assert.yes</source>
+        <target>Tak</target>
+      </trans-unit>
+      <trans-unit id="7ulUalV" resname="entity.employee_schedule.assert.no">
+        <source>entity.employee_schedule.assert.no</source>
+        <target>Nie</target>
+      </trans-unit>
+      <trans-unit id="raTOIMl" resname="entity.employee_schedule.assert.time_from_greater_than_time_to">
+        <source>entity.employee_schedule.assert.time_from_greater_than_time_to</source>
+        <target>Godzina początkowa musi być mniejsza od godziny końcowej!</target>
+      </trans-unit>
+      <trans-unit id="DHRXs_L" resname="entity.employee_schedule.assert.day_from_greater_than_day_to">
+        <source>entity.employee_schedule.assert.day_from_greater_than_day_to</source>
+        <target>Data początkowa musi być mniejsza od daty końcowej!</target>
+      </trans-unit>
+      <trans-unit id="ueiipUN" resname="entity.employee_schedule.assert.day_from_less_than_day_now">
+        <source>entity.employee_schedule.assert.day_from_less_than_day_now</source>
+        <target>Data początkowa musi być większa od daty dzisiejszej!</target>
+      </trans-unit>
+      <trans-unit id="v.eqG4D" resname="entity.employee_schedule.view.no_records_found">
+        <source>entity.employee_schedule.view.no_records_found</source>
+        <target>Brak rekordów</target>
+      </trans-unit>
+      <trans-unit id="g9zYvuf" resname="entity.employee_schedule.view.list.title">
+        <source>entity.employee_schedule.view.list.title</source>
+        <target>Harmonogram pracy</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

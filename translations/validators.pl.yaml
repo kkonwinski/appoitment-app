@@ -1,0 +1,13 @@
+entity:
+  employee_schedule:
+    assert:
+      not_blank: To pole nie może być puste!
+      yes: Tak
+      no: Nie
+      time_from_greater_than_time_to: Godzina początkowa musi być mniejsza od godziny końcowej!
+      day_from_greater_than_day_to: Data początkowa musi być mniejsza od daty końcowej!
+      day_from_less_than_day_now: Data początkowa musi być większa od daty dzisiejszej!
+    view:
+      no_records_found: Brak rekordów
+      list:
+        title: Harmonogram pracy

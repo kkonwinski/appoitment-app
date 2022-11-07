@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="pl" target-language="pl" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="Z8kx9v1" resname="admin.sidebar.manage_employee">
+        <source>admin.sidebar.manage_employee</source>
+        <target>Zarządzaj pracownikami</target>
+      </trans-unit>
+      <trans-unit id="NYDf8eY" resname="admin.sidebar.employees">
+        <source>admin.sidebar.employees</source>
+        <target>Pracownicy</target>
+      </trans-unit>
+      <trans-unit id="5P5fgta" resname="admin.sidebar.employee_work_schedule">
+        <source>admin.sidebar.employee_work_schedule</source>
+        <target>Harmonogram pracy</target>
+      </trans-unit>
+      <trans-unit id="NVsxc2F" resname="admin.sidebar.employee_work_schedule_new">
+        <source>admin.sidebar.employee_work_schedule_new</source>
+        <target>Nowy harmonogram</target>
+      </trans-unit>
+      <trans-unit id="xKxYzaX" resname="admin.sidebar.employee_work_schedule_manage">
+        <source>admin.sidebar.employee_work_schedule_manage</source>
+        <target>Zarządzaj harmonogramem</target>
+      </trans-unit>
+      <trans-unit id="dBGMIp." resname="entity.user.fullname">
+        <source>entity.user.fullname</source>
+        <target>Imię i Nazwisko</target>
+      </trans-unit>
+      <trans-unit id="jzaAY6q" resname="entity.employee_schedule.not_blank">
+        <source>entity.employee_schedule.not_blank</source>
+        <target>To pole nie może być puste!</target>
+      </trans-unit>
+      <trans-unit id="8t2T2HR" resname="view.edit">
+        <source>view.edit</source>
+        <target>Edytuj</target>
+      </trans-unit>
+      <trans-unit id="j0MnkCK" resname="view.delete">
+        <source>view.delete</source>
+        <target>Usuń</target>
+      </trans-unit>
+      <trans-unit id="7MypxO2" resname="view.save">
+        <source>view.save</source>
+        <target>Zapisz</target>
+      </trans-unit>
+      <trans-unit id="guXTUCg" resname="login.password">
+        <source>login.password</source>
+        <target>Hasło</target>
+      </trans-unit>
+      <trans-unit id="g8hJY.0" resname="login.email">
+        <source>login.email</source>
+        <target>Wprowadz adres e-mail</target>
+      </trans-unit>
+      <trans-unit id="geNmxn5" resname="login.login_btn">
+        <source>login.login_btn</source>
+        <target>Zaloguj</target>
+      </trans-unit>
+      <trans-unit id="3_uISFe" resname="login.login_title">
+        <source>login.login_title</source>
+        <target>Zaloguj się do panelu administracyjnego</target>
+      </trans-unit>
+      <trans-unit id="3BvJP06" resname="login.login_with_google">
+        <source>login.login_with_google</source>
+        <target>Zaloguj się przez Google</target>
+      </trans-unit>
+      <trans-unit id="wj_j8Lz" resname="login.login_with_facebook">
+        <source>login.login_with_facebook</source>
+        <target>Zaloguj się przez Facebook</target>
+      </trans-unit>
+      <trans-unit id="ObbYKfL" resname="logout.ready_to_leave">
+        <source>logout.ready_to_leave</source>
+        <target>Czy na pewno chcesz się wylogować?</target>
+      </trans-unit>
+      <trans-unit id="hXY9PPY" resname="logout.logout_btn">
+        <source>logout.logout_btn</source>
+        <target>Wyloguj</target>
+      </trans-unit>
+      <trans-unit id="Ye.VcQZ" resname="logout.cancel_btn">
+        <source>logout.cancel_btn</source>
+        <target>Anuluj</target>
+      </trans-unit>
+      <trans-unit id="Jqb5XKb" resname="logout.modal_description">
+        <source>logout.modal_description</source>
+        <target>Jeśli wylogujesz się, nie będziesz mógł ponownie uzyskać dostępu do tego konta, dopóki nie zalogujesz się ponownie.</target>
+      </trans-unit>
+      <trans-unit id="Ci3qibM" resname="form.save">
+        <source>form.save</source>
+        <target>Zapisz</target>
+      </trans-unit>
+      <trans-unit id="sMTrGct" resname="form.employee_schedule.day_from">
+        <source>form.employee_schedule.day_from</source>
+        <target>Data początkowa</target>
+      </trans-unit>
+      <trans-unit id="LSY6N3a" resname="form.employee_schedule.day_to">
+        <source>form.employee_schedule.day_to</source>
+        <target>Data końcowa</target>
+      </trans-unit>
+      <trans-unit id="8Oo6Iik" resname="form.employee_schedule.time_from">
+        <source>form.employee_schedule.time_from</source>
+        <target>Godzina początkowa</target>
+      </trans-unit>
+      <trans-unit id="Ynb8DB8" resname="form.employee_schedule.time_to">
+        <source>form.employee_schedule.time_to</source>
+        <target>Godzina końcowa</target>
+      </trans-unit>
+      <trans-unit id="Z5rvZwi" resname="form.employee_schedule.title">
+        <source>form.employee_schedule.title</source>
+        <target>Tytuł</target>
+      </trans-unit>
+      <trans-unit id="MdQ5T3X" resname="form.employee_schedule.repeat_infinity">
+        <source>form.employee_schedule.repeat_infinity</source>
+        <target>Powtarzaj bez końca</target>
+      </trans-unit>
+      <trans-unit id="v.eqG4D" resname="entity.employee_schedule.view.no_records_found">
+        <source>entity.employee_schedule.view.no_records_found</source>
+        <target>__entity.employee_schedule.view.no_records_found</target>
+      </trans-unit>
+      <trans-unit id="g9zYvuf" resname="entity.employee_schedule.view.list.title">
+        <source>entity.employee_schedule.view.list.title</source>
+        <target>__entity.employee_schedule.view.list.title</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

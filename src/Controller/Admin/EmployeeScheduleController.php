@@ -24,7 +24,6 @@ class EmployeeScheduleController extends AbstractController
     ): Response {
         /**  @var $employeeSchedule EmployeeSchedule */
         $employeeSchedule = $employeeScheduleRepository->findEmployeeSchedulesByUser($user);
-//if employeeSchedule is null, create empty EmployeeSchedule entity object
 
         if (!$employeeSchedule) {
             $employeeSchedule = new EmployeeSchedule();
@@ -34,37 +33,34 @@ class EmployeeScheduleController extends AbstractController
             $employeeSchedule
         );
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            //transform data from form to entity
-//            $employeeSchedule->setTitle($employeeScheduleForm->get('title')->getData());
-//            $employeeSchedule->setDayFrom($employeeScheduleForm->get('dayFrom')->getData());
-//            $employeeSchedule->setDayTo($employeeScheduleForm->get('dayTo')->getData());
-//            $employeeSchedule->setTimeFrom($employeeScheduleForm->get('timeFrom')->getData());
-//            $employeeSchedule->setTimeTo($employeeScheduleForm->get('timeTo')->getData());
-//            $employeeSchedule->setRepeatInfinity($employeeScheduleForm->get('repeatInfinity')->getData());
-//            $employeeSchedule->setUser($user);
+            $employeeSchedule->setUser($user);
 
             $employeeScheduleRepository->save($employeeSchedule, true);
 
-            return $this->redirectToRoute('admin_employee_schedule_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'admin_employee_schedule_list',
+                ['slug' => $user->getSlug()],
+                Response::HTTP_SEE_OTHER
+            );
         }
         return $this->render('admin/employee_schedule/list.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EmployeeScheduleRepository $employeeScheduleRepository): Response
+    #[Route('/new/{id}', name: 'new', methods: ['GET', 'POST'])]
+    public function new(User $user, Request $request, EmployeeScheduleRepository $employeeScheduleRepository): Response
     {
         $employeeSchedule = new EmployeeSchedule();
         $form = $this->createForm(EmployeeScheduleType::class, $employeeSchedule);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $employeeSchedule->setUser($user);
             $employeeScheduleRepository->save($employeeSchedule, true);
 
-            return $this->redirectToRoute('admin_employee_schedule_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_employee_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/employee_schedule/new.html.twig', [
