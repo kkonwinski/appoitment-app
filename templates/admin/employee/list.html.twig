@@ -20,7 +20,7 @@
                     <td>{{ employee.fullname }}</td>
 
                     <td>
-                        <a href="{{ path('admin_employee_schedule_new',{'id':employee.id}) }}" class="btn btn-outline-primary">{{ 'admin.sidebar.employee_work_schedule_new'|trans }}</a>
+                        <a href="{{ path('admin_employee_schedule_list',{'id':employee.id}) }}" class="btn btn-outline-primary">{{ 'view.employee_schedule.list'|trans }}</a>
 
                     </td>
                 </tr>

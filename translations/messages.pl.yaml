@@ -14,6 +14,11 @@ view:
   edit: Edytuj
   delete: Usuń
   save: Zapisz
+  employee_schedule:
+    list: Harmonogramy pracy
+    new: Nowy harmonogram
+    date_range: Zakres dat
+    edit: Edytuj harmonogram
 login:
   password: Hasło
   email: Wprowadz adres e-mail
@@ -35,3 +40,4 @@ form:
     time_to: Godzina końcowa
     title: Tytuł
     repeat_infinity: Powtarzaj bez końca
+

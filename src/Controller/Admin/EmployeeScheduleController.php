@@ -6,6 +6,7 @@ use App\Entity\EmployeeSchedule;
 use App\Entity\User;
 use App\Form\EmployeeScheduleType;
 use App\Repository\EmployeeScheduleRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,37 +16,25 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('admin/employee/schedule', name: 'admin_employee_schedule_')]
 class EmployeeScheduleController extends AbstractController
 {
-    #[Route('/list/{slug}', name: 'list', methods: ['GET', 'POST'])]
-    public function index(
+    #[Route('/list/{id}', name: 'list', methods: ['GET', 'POST'])]
+    public function list(
         User $user,
         EmployeeScheduleRepository $employeeScheduleRepository,
         Request $request,
-        ValidatorInterface $validator
+        PaginatorInterface $paginator
     ): Response {
-        /**  @var $employeeSchedule EmployeeSchedule */
-        $employeeSchedule = $employeeScheduleRepository->findEmployeeSchedulesByUser($user);
 
-        if (!$employeeSchedule) {
-            $employeeSchedule = new EmployeeSchedule();
-        }
-        $form = $this->createForm(
-            EmployeeScheduleType::class,
-            $employeeSchedule
+
+        $employeeSchedules = $paginator->paginate(
+            $employeeScheduleRepository->findEmployeeSchedulesByUser($user), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
         );
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $employeeSchedule->setUser($user);
 
-            $employeeScheduleRepository->save($employeeSchedule, true);
 
-            return $this->redirectToRoute(
-                'admin_employee_schedule_list',
-                ['slug' => $user->getSlug()],
-                Response::HTTP_SEE_OTHER
-            );
-        }
         return $this->render('admin/employee_schedule/list.html.twig', [
-            'form' => $form->createView(),
+            'employeeSchedules' => $employeeSchedules,
+            'user' => $user,
         ]);
     }
 
