@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -63,6 +64,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setParameter('val', $company)
             ->getQuery()
             ->getResult();
+    }
+    public function findCompaniesByUser($user)
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('u.company', 'c')
+            ->andWhere('u :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 //    /**

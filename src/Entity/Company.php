@@ -47,7 +47,7 @@ class Company
     private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class)]
-    private Collection $companyAddresses;
+    protected Collection $companyAddresses;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAdditionalInfo::class, orphanRemoval: true)]
     private Collection $companyAdditionalInfo;

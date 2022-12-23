@@ -19,6 +19,13 @@ view:
     new: Nowy harmonogram
     date_range: Zakres dat
     edit: Edytuj harmonogram
+  employee:
+    list: Pracownicy
+    new: Nowy pracownik
+    edit: Edytuj pracownika
+  company:
+    new: Nowa firma
+
 login:
   password: Hasło
   email: Wprowadz adres e-mail
@@ -40,4 +47,15 @@ form:
     time_to: Godzina końcowa
     title: Tytuł
     repeat_infinity: Powtarzaj bez końca
-
+  company:
+    name: Nazwa firmy
+    create_new_company: Utwórz nową firmę
+  company_address:
+    street: Ulica
+    city: Miasto
+    post_code: Kod pocztowy
+    country: Kraj
+    building_number: Numer budynku
+  employee:
+    name: Imię
+    surname: Nazwisko

@@ -3,7 +3,9 @@
 {% block title %}{{ 'admin.sidebar.manage_employee'|trans }}{% endblock %}
 
 {% block body %}
-
+    <div class="text-right mb-3">
+    <a href="{{ path('admin_employee_new') }}" class="btn btn-outline-success ">{{ 'view.employee.new'|trans }}</a>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>

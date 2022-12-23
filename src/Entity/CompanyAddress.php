@@ -14,7 +14,7 @@ class CompanyAddress
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $city = null;
+    protected ?string $city = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $postCode = null;
@@ -29,7 +29,7 @@ class CompanyAddress
     private ?string $buildingNumber = null;
 
     #[ORM\ManyToOne(inversedBy: 'companyAddresses')]
-    private ?Company $company = null;
+    protected ?Company $company = null;
 
     public function getId(): ?int
     {

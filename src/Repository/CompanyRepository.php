@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Company;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,14 +40,15 @@ class CompanyRepository extends ServiceEntityRepository
         }
     }
 //find users belongs to company
-    public function findUsersByCompany($company)
-    {
-        return $this->createQueryBuilder('c')
-        ->where('c = :company')
-        ->setParameter('company', $company)
-        ->getQuery()
-        ->getResult();
-    }
+//    public function findCompaniesByUser(User $user)
+//    {
+//        return $this->createQueryBuilder('c')
+//            ->leftJoin('c.user = :user')
+//            ->setParameter('user', $user)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
 
 //    /**
 //     * @return Company[] Returns an array of Company objects
