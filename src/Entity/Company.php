@@ -46,7 +46,7 @@ class Company
     #[Gedmo\Slug(fields: ['name'])]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class, cascade: ['persist'])]
     protected Collection $companyAddresses;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAdditionalInfo::class, orphanRemoval: true)]

@@ -13,14 +13,17 @@ class CompanyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('name', TextType::class, [
                 'required' => true,
                 'label' => 'form.company.name',
                 'attr' => [
-                    'class' => 'form-control'
-                ]
+                    'class' => 'form-control',
+                    'disabled' => $options['data']->getName() !== null,
 
+                ],
+                'empty_data' => $options['data']->getName()
             ])
             ->add(
                 'companyAddresses',
@@ -29,8 +32,8 @@ class CompanyType extends AbstractType
                     'entry_type' => CompanyAddressType::class,
                     'entry_options' => ['label' => false],
                     'allow_add' => true,
-
-                ]
+                    'label' => 'form.company_address.company_address_label',
+                ],
             );
     }
 
@@ -38,7 +41,6 @@ class CompanyType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Company::class,
-
         ]);
     }
 }

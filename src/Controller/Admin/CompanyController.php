@@ -41,4 +41,27 @@ class CompanyController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/{slug}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    public function edit(Company $company, Request $request, CompanyRepository $companyRepository): Response
+    {
+
+        $form = $this->createForm(
+            CompanyType::class,
+            $company,
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $companyRepository->save($company, true);
+
+            return $this->redirectToRoute('admin_dashboard', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('admin/company/edit.html.twig', [
+            'company' => $company,
+            'form' => $form,
+        ]);
+    }
 }

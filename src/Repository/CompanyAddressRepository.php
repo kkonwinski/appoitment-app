@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\CompanyAddress;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @extends ServiceEntityRepository<CompanyAddress>
@@ -37,6 +38,15 @@ class CompanyAddressRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+    public function findCompaniesAddressesByCompany($company)
+    {
+         return  $this->createQueryBuilder('c')
+            ->andWhere('c.company = :company')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 //    /**

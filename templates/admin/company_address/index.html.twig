@@ -1,34 +1,36 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}CompanyAddress index{% endblock %}
 
 {% block body %}
-    <h1>CompanyAddress index</h1>
-
+    <h1>{{ 'view.company_address.list'|trans }}:  {{ app.user.company.name }}</h1>
+    <div class="text-right mb-3">
+        <a href="{{ path('admin_company_address_new') }}" class="btn btn-outline-success ">{{ 'view.company_address.new'|trans }}</a>
+    </div>
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>City</th>
-                <th>PostCode</th>
-                <th>Country</th>
-                <th>Street</th>
-                <th>BuildingNumber</th>
-                <th>actions</th>
+                <th>{{ 'view.company_address.city'|trans }}</th>
+                <th>{{ 'view.company_address.street'|trans }}</th>
+                <th>{{ 'view.company_address.post_code'|trans }}</th>
+                <th>{{ 'view.company_address.country'|trans }}</th>
+                <th>{{ 'view.company_address.building_number'|trans }}</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for company_address in company_addresses %}
             <tr>
-                <td>{{ company_address.id }}</td>
+                <td>{{ loop.index }}</td>
                 <td>{{ company_address.city }}</td>
                 <td>{{ company_address.postCode }}</td>
                 <td>{{ company_address.country }}</td>
                 <td>{{ company_address.street }}</td>
                 <td>{{ company_address.buildingNumber }}</td>
                 <td>
-                    <a href="{{ path('app_company_address_show', {'id': company_address.id}) }}">show</a>
-                    <a href="{{ path('app_company_address_edit', {'id': company_address.id}) }}">edit</a>
+{#                    <a href="{{ path('app_company_address_show', {'id': company_address.id}) }}">show</a>#}
+                    <a href="{{ path('admin_company_address_edit', {'id': company_address.id}) }}" class="btn btn-outline-warning">{{ 'view.edit'|trans }}</a>
                 </td>
             </tr>
         {% else %}
@@ -39,5 +41,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_company_address_new') }}">Create new</a>
+{#    <a href="{{ path('app_company_address_new') }}">Create new</a>#}
 {% endblock %}

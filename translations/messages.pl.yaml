@@ -14,6 +14,7 @@ view:
   edit: Edytuj
   delete: Usuń
   save: Zapisz
+  back_to_list: Wróć do listy
   employee_schedule:
     list: Harmonogramy pracy
     new: Nowy harmonogram
@@ -25,6 +26,17 @@ view:
     edit: Edytuj pracownika
   company:
     new: Nowa firma
+  company_address:
+    new: Nowy adres firmy
+    list: Adresy firmy
+    street: Ulica
+    city: Miasto
+    post_code: Kod pocztowy
+    country: Kraj
+    building_number: Numer budynku
+
+
+
 
 login:
   password: Hasło
@@ -51,6 +63,7 @@ form:
     name: Nazwa firmy
     create_new_company: Utwórz nową firmę
   company_address:
+    company_address_label: Dane adresowe firmy
     street: Ulica
     city: Miasto
     post_code: Kod pocztowy
