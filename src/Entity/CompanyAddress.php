@@ -50,7 +50,11 @@ class CompanyAddress
     #[ORM\ManyToOne(inversedBy: 'companyAddresses')]
     private ?Company $company = null;
 
-    #[ORM\OneToMany(mappedBy: 'companyAddress', targetEntity: CompanyAdditionalInfo::class, cascade: ['persist','remove'])]
+    #[ORM\OneToMany(
+        mappedBy: 'companyAddress',
+        targetEntity: CompanyAdditionalInfo::class,
+        cascade: ['persist','remove']
+    )]
     protected Collection $companyAdditionalInfos;
 
     public function __construct()
