@@ -46,17 +46,13 @@ class Company
     #[Gedmo\Slug(fields: ['name'])]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class)]
     protected Collection $companyAddresses;
-
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAdditionalInfo::class, orphanRemoval: true)]
-    private Collection $companyAdditionalInfo;
 
     public function __construct()
     {
         $this->user = new ArrayCollection();
         $this->companyAddresses = new ArrayCollection();
-        $this->companyAdditionalInfo = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,34 +144,5 @@ class Company
         return $this;
     }
 
-    /**
-     * @return Collection<int, CompanyAdditionalInfo>
-     */
-    public function getCompanyAdditionalInfo(): Collection
-    {
-        return $this->companyAdditionalInfo;
-    }
 
-    public function addCompanyAdditionalInfo(CompanyAdditionalInfo $companyAdditionalInfo): self
-    {
-        if (!$this->companyAdditionalInfo->contains($companyAdditionalInfo)) {
-            $this->companyAdditionalInfo->add($companyAdditionalInfo);
-            $companyAdditionalInfo->setCompany($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompanyAdditionalInfo(CompanyAdditionalInfo $companyAdditionalInfo): self
-    {
-        // set the owning side to null (unless already changed)
-        if (
-            $this->companyAdditionalInfo->removeElement($companyAdditionalInfo) &&
-            $companyAdditionalInfo->getCompany() === $this
-        ) {
-            $companyAdditionalInfo->setCompany(null);
-        }
-
-        return $this;
-    }
 }

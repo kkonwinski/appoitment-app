@@ -2,10 +2,10 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\CompanyAdditionalInfo;
 use App\Entity\CompanyAddress;
 use App\Form\CompanyAddressType;
 use App\Repository\CompanyAddressRepository;
-use JetBrains\PhpStorm\NoReturn;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,7 @@ class CompanyAddressController extends AbstractController
         return $this->render('admin/company_address/index.html.twig', [
             'company_addresses' =>
                 $companyAddressRepository->
-                findBy(['company' => $this->getUser()->getCompany()]),
+                findBy(['company' => $this->getUser()->getCompany(),'deletedAt' => null]),
         ]);
     }
 
@@ -29,10 +29,16 @@ class CompanyAddressController extends AbstractController
     public function new(Request $request, CompanyAddressRepository $companyAddressRepository): Response
     {
         $companyAddress = new CompanyAddress();
+        $companyAdditionalInfo = new CompanyAdditionalInfo();
+        $companyAddress->addCompanyAdditionalInfo($companyAdditionalInfo);
+
         $form = $this->createForm(CompanyAddressType::class, $companyAddress);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if (
+            $form->isSubmitted() &&
+            $form->isValid()
+        ) {
             $companyAddress->setCompany($this->getUser()->getCompany());
             $companyAddressRepository->save($companyAddress, true);
 
@@ -46,8 +52,11 @@ class CompanyAddressController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, CompanyAddress $companyAddress, CompanyAddressRepository $companyAddressRepository): Response
-    {
+    public function edit(
+        Request $request,
+        CompanyAddress $companyAddress,
+        CompanyAddressRepository $companyAddressRepository
+    ): Response {
         $form = $this->createForm(CompanyAddressType::class, $companyAddress);
         $form->handleRequest($request);
 
@@ -63,13 +72,16 @@ class CompanyAddressController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_company_address_delete', methods: ['POST'])]
-    public function delete(Request $request, CompanyAddress $companyAddress, CompanyAddressRepository $companyAddressRepository): Response
-    {
+    #[Route('/{id}', name: 'delete', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        CompanyAddress $companyAddress,
+        CompanyAddressRepository $companyAddressRepository
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $companyAddress->getId(), $request->request->get('_token'))) {
             $companyAddressRepository->remove($companyAddress, true);
         }
 
-        return $this->redirectToRoute('app_company_address_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_company_address_list', [], Response::HTTP_SEE_OTHER);
     }
 }

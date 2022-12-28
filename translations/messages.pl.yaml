@@ -14,6 +14,7 @@ view:
   edit: Edytuj
   delete: Usuń
   save: Zapisz
+  are_you_sure_delete: Napewno checesz usunąć tą pozycje?
   back_to_list: Wróć do listy
   employee_schedule:
     list: Harmonogramy pracy
@@ -72,3 +73,12 @@ form:
   employee:
     name: Imię
     surname: Nazwisko
+  company_additional_info:
+    company_additional_info_label: Dodatkowe informacje placówki
+    phone: Telefon
+    website: Strona www
+    facebook: Facebook
+    instagram: Instagram
+    email: Email
+
+

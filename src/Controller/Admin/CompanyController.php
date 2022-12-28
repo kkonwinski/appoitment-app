@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Company;
-use App\Entity\CompanyAddress;
 use App\Form\CompanyType;
 use App\Repository\CompanyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -19,13 +18,11 @@ class CompanyController extends AbstractController
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, CompanyRepository $companyRepository): Response
     {
-//        if ($this->getUser()->getCompany()) {
-//            return $this->redirectToRoute('admin_dashboard');
-//        }
+        if ($this->getUser()->getCompany()) {
+            return $this->redirectToRoute('admin_dashboard');
+        }
 
         $company = new Company();
-        $companyAddresses = new CompanyAddress();
-        $company->addCompanyAddress($companyAddresses);
         $form = $this->createForm(CompanyType::class, $company);
         $form->handleRequest($request);
 

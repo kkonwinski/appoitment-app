@@ -24,17 +24,7 @@ class CompanyType extends AbstractType
 
                 ],
                 'empty_data' => $options['data']->getName()
-            ])
-            ->add(
-                'companyAddresses',
-                CollectionType::class,
-                [
-                    'entry_type' => CompanyAddressType::class,
-                    'entry_options' => ['label' => false],
-                    'allow_add' => true,
-                    'label' => 'form.company_address.company_address_label',
-                ],
-            );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
