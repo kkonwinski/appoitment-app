@@ -7,12 +7,14 @@ use App\Entity\CompanyAddress;
 use App\Form\CompanyAddressType;
 use App\Repository\CompanyAddressRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/admin/company/address', name: 'admin_company_address_')]
+#[IsGranted('ROLE_OWNER')]
 class CompanyAddressController extends AbstractController
 {
     #[Route('', name: 'list', methods: ['GET'])]
