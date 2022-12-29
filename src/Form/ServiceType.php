@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Service;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -34,10 +35,12 @@ class ServiceType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('description', TextareaType::class, [
+            ->add('description', CKEditorType::class, [
                 'label' => 'form.service.description',
+                'config' => array('toolbar' => 'basic'),
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'rows' => 10
                 ]
             ]);
     }
