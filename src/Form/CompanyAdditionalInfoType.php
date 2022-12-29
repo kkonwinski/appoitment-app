@@ -5,17 +5,19 @@ namespace App\Form;
 use App\Entity\CompanyAdditionalInfo;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class CompanyAdditionalInfoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('phone', TextType::class, [
+            ->add('phone', TelType::class, [
                 'label' => 'form.company_additional_info.phone',
                 'attr' => [
                     'class' => 'form-control'
@@ -51,6 +53,7 @@ class CompanyAdditionalInfoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CompanyAdditionalInfo::class,
+            'validation_groups' => ['Default', 'CompanyAdditionalInfo']
         ]);
     }
 }

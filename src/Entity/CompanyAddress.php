@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\SoftDeleteable;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Valid;
 
 #[SoftDeleteable(fieldName: "deletedAt", timeAware: false)]
 #[ORM\Entity(repositoryClass: CompanyAddressRepository::class)]
@@ -33,29 +36,37 @@ class CompanyAddress
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
     protected ?string $city = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
+    #[Regex(pattern: '/^[0-9]{2}-[0-9]{3}$/i', message: 'entity.company_address.assert.post_code')]
     private ?string $postCode = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $country = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
     private ?string $street = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
     private ?string $buildingNumber = null;
 
-    #[ORM\ManyToOne(inversedBy: 'companyAddresses')]
-    private ?Company $company = null;
+
 
     #[ORM\OneToMany(
         mappedBy: 'companyAddress',
         targetEntity: CompanyAdditionalInfo::class,
         cascade: ['persist','remove']
     )]
-    protected Collection $companyAdditionalInfos;
+    #[Valid]
+    private Collection $companyAdditionalInfos;
+
+    #[ORM\ManyToOne(inversedBy: 'companyAddress')]
+    private ?Company $company = null;
 
     public function __construct()
     {
@@ -127,17 +138,6 @@ class CompanyAddress
         return $this;
     }
 
-    public function getCompany(): ?Company
-    {
-        return $this->company;
-    }
-
-    public function setCompany(?Company $company): self
-    {
-        $this->company = $company;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, CompanyAdditionalInfo>
@@ -165,6 +165,18 @@ class CompanyAddress
                 $companyAdditionalInfo->setCompanyAddress(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
 
         return $this;
     }

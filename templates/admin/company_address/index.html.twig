@@ -12,8 +12,8 @@
             <tr>
                 <th>Id</th>
                 <th>{{ 'view.company_address.city'|trans }}</th>
-                <th>{{ 'view.company_address.street'|trans }}</th>
                 <th>{{ 'view.company_address.post_code'|trans }}</th>
+                <th>{{ 'view.company_address.street'|trans }}</th>
                 <th>{{ 'view.company_address.country'|trans }}</th>
                 <th>{{ 'view.company_address.building_number'|trans }}</th>
                 <th></th>
@@ -28,7 +28,7 @@
                 <td>{{ company_address.country }}</td>
                 <td>{{ company_address.street }}</td>
                 <td>{{ company_address.buildingNumber }}</td>
-                <td>
+                <td class="d-flex justify-content-evenly">
                     <a href="{{ path('admin_company_address_edit', {'id': company_address.id}) }}" class="btn btn-outline-warning">{{ 'view.edit'|trans }}</a>
                     {{ include('admin/company/_delete_form.html.twig') }}
                 </td>

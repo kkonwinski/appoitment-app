@@ -26,7 +26,9 @@ view:
     new: Nowy pracownik
     edit: Edytuj pracownika
   company:
+    manage_company: Zarządzaj firmą
     new: Nowa firma
+    company: Firma
   company_address:
     new: Nowy adres firmy
     list: Adresy firmy
@@ -81,4 +83,6 @@ form:
     instagram: Instagram
     email: Email
 
-
+exception:
+  company_address:
+    not_belongs_to_user: Adres firmy nie należy do użytkownika!

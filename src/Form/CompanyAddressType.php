@@ -62,7 +62,8 @@ class CompanyAddressType extends AbstractType
                     'entry_options' => ['label' => false],
                     'allow_add' => true,
                     'label' => 'form.company_address.company_address_label',
-                ],
+//                    'data' => $builder->getData()->getCompanyAdditionalInfos()
+                    ]
             );
     }
 

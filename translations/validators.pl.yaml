@@ -11,3 +11,12 @@ entity:
       no_records_found: Brak rekordów
       list:
         title: Harmonogram pracy
+  company_address:
+    assert:
+      not_blank: To pole nie może być puste!
+      post_code: Kod pocztowy musi być w formacie 00-000
+  company_additional_info:
+    assert:
+      email: Nieprawidłowy adres email!
+      url: Nieprawidłowy adres URL!
+      phone: Numer telefonu musi być w formacie +48 000 000 000

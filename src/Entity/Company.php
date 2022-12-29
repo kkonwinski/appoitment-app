@@ -47,12 +47,13 @@ class Company
     private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class)]
-    protected Collection $companyAddresses;
+    private Collection $companyAddress;
+
 
     public function __construct()
     {
         $this->user = new ArrayCollection();
-        $this->companyAddresses = new ArrayCollection();
+        $this->companyAddress = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -117,15 +118,15 @@ class Company
     /**
      * @return Collection<int, CompanyAddress>
      */
-    public function getCompanyAddresses(): Collection
+    public function getCompanyAddress(): Collection
     {
-        return $this->companyAddresses;
+        return $this->companyAddress;
     }
 
     public function addCompanyAddress(CompanyAddress $companyAddress): self
     {
-        if (!$this->companyAddresses->contains($companyAddress)) {
-            $this->companyAddresses->add($companyAddress);
+        if (!$this->companyAddress->contains($companyAddress)) {
+            $this->companyAddress->add($companyAddress);
             $companyAddress->setCompany($this);
         }
 
@@ -134,7 +135,7 @@ class Company
 
     public function removeCompanyAddress(CompanyAddress $companyAddress): self
     {
-        if ($this->companyAddresses->removeElement($companyAddress)) {
+        if ($this->companyAddress->removeElement($companyAddress)) {
             // set the owning side to null (unless already changed)
             if ($companyAddress->getCompany() === $this) {
                 $companyAddress->setCompany(null);
@@ -143,6 +144,7 @@ class Company
 
         return $this;
     }
+
 
 
 }

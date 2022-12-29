@@ -7,6 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\SoftDeleteable;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Url;
 
 #[SoftDeleteable(fieldName: "deletedAt", timeAware: false)]
 #[ORM\Entity(repositoryClass: CompanyAdditionalInfoRepository::class)]
@@ -30,18 +33,29 @@ class CompanyAdditionalInfo
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Regex([
+        'pattern' => '/^(\+48|0048|48|0)?[0-9]{9}$/',
+        'message' => 'entity.company_additional_info.assert.phone',
+    ])]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Regex(
+        pattern:"/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/",
+        message: 'entity.company_additional_info.assert.email'
+    )]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Url(message: 'entity.company_additional_info.assert.url')]
     private ?string $facebook = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Url(message: 'entity.company_additional_info.assert.url')]
     private ?string $instagram = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Url(message: 'entity.company_additional_info.assert.url')]
     private ?string $website = null;
 
     #[ORM\ManyToOne(inversedBy: 'companyAdditionalInfos')]

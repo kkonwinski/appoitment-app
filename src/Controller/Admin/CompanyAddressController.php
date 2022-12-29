@@ -6,6 +6,7 @@ use App\Entity\CompanyAdditionalInfo;
 use App\Entity\CompanyAddress;
 use App\Form\CompanyAddressType;
 use App\Repository\CompanyAddressRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,17 +47,22 @@ class CompanyAddressController extends AbstractController
         }
 
         return $this->renderForm('admin/company_address/new.html.twig', [
-            'company_address' => $companyAddress,
+            'companyAddress' => $companyAddress,
             'form' => $form,
         ]);
     }
 
+    /**
+     * @throws NonUniqueResultException
+     */
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
         CompanyAddress $companyAddress,
         CompanyAddressRepository $companyAddressRepository
     ): Response {
+        $companyAddressRepository->checkIfCompanyAddressBelongsToUser($companyAddress, $this->getUser());
+
         $form = $this->createForm(CompanyAddressType::class, $companyAddress);
         $form->handleRequest($request);
 
@@ -65,14 +71,14 @@ class CompanyAddressController extends AbstractController
 
             return $this->redirectToRoute('admin_company_address_list', [], Response::HTTP_SEE_OTHER);
         }
-
+dd($form);
         return $this->renderForm('admin/company_address/edit.html.twig', [
-            'company_address' => $companyAddress,
+            'companyAddress' => $companyAddress,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'delete', methods: ['POST'])]
     public function delete(
         Request $request,
         CompanyAddress $companyAddress,
