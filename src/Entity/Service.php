@@ -40,11 +40,13 @@ class Service
     #[Regex(pattern: "/\d+/")]
     private ?int $duration = 0;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2, nullable: true)]
-    private ?string $price = "0.00";
+
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\Column]
+    private ?float $price = null;
 
     public function getId(): ?int
     {
@@ -74,19 +76,6 @@ class Service
 
         return $this;
     }
-
-    public function getPrice(): ?string
-    {
-        return $this->price;
-    }
-
-    public function setPrice(?string $price): self
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -95,6 +84,18 @@ class Service
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }

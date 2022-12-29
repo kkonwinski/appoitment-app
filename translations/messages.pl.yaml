@@ -13,6 +13,7 @@ entity:
   service:
     not_blank: To pole nie może być puste!
 view:
+  no_records_found: Nie znaleziono rekordów
   edit: Edytuj
   delete: Usuń
   save: Zapisz
@@ -45,6 +46,11 @@ view:
     list: Lista usług
     new: Nowa usługa
     edit: Edytuj usługę
+    name: Nazwa
+    price: Cena
+    duration: Czas trwania
+    description: Opis
+    back_to_service_list: Wróć do listy usług
 
 
 
