@@ -62,6 +62,24 @@
         </div>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#coolapseCompany"
+           aria-expanded="true" aria-controls="coolapseCompany">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>{{ 'view.company.company'|trans }}</span>
+        </a>
+        <div id="coolapseCompany" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">{{ 'view.company.manage_company'|trans }}</h6>
+                {% if app.user.company is null %}
+                    <a class="collapse-item" href="{{ path('admin_company_new') }}">{{ 'view.company.new'|trans }}</a>
+                {% else %}
+                    <a class="collapse-item" href="{{ path('admin_company_address_list') }}">{{ 'view.company_address.list'|trans }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </li>
+
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"

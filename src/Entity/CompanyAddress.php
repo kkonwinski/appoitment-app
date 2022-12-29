@@ -3,33 +3,75 @@
 namespace App\Entity;
 
 use App\Repository\CompanyAddressRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Valid;
 
+#[SoftDeleteable(fieldName: "deletedAt", timeAware: false)]
 #[ORM\Entity(repositoryClass: CompanyAddressRepository::class)]
 class CompanyAddress
 {
+    /**
+     * Hook timestampable behavior
+     * updates createdAt, updatedAt fields
+     */
+    use TimestampableEntity;
+
+    /**
+     * Hook SoftDeleteable behavior
+     * updates deletedAt field
+     */
+    use SoftDeleteableEntity;
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $city = null;
+    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
+    protected ?string $city = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
+    #[Regex(pattern: '/^[0-9]{2}-[0-9]{3}$/i', message: 'entity.company_address.assert.post_code')]
     private ?string $postCode = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $country = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
     private ?string $street = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
     private ?string $buildingNumber = null;
 
-    #[ORM\ManyToOne(inversedBy: 'companyAddresses')]
+
+
+    #[ORM\OneToMany(
+        mappedBy: 'companyAddress',
+        targetEntity: CompanyAdditionalInfo::class,
+        cascade: ['persist','remove']
+    )]
+    #[Valid]
+    private Collection $companyAdditionalInfos;
+
+    #[ORM\ManyToOne(inversedBy: 'companyAddress')]
     private ?Company $company = null;
+
+    public function __construct()
+    {
+        $this->companyAdditionalInfos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -92,6 +134,37 @@ class CompanyAddress
     public function setBuildingNumber(?string $buildingNumber): self
     {
         $this->buildingNumber = $buildingNumber;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, CompanyAdditionalInfo>
+     */
+    public function getCompanyAdditionalInfos(): Collection
+    {
+        return $this->companyAdditionalInfos;
+    }
+
+    public function addCompanyAdditionalInfo(CompanyAdditionalInfo $companyAdditionalInfo): self
+    {
+        if (!$this->companyAdditionalInfos->contains($companyAdditionalInfo)) {
+            $this->companyAdditionalInfos->add($companyAdditionalInfo);
+            $companyAdditionalInfo->setCompanyAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompanyAdditionalInfo(CompanyAdditionalInfo $companyAdditionalInfo): self
+    {
+        if ($this->companyAdditionalInfos->removeElement($companyAdditionalInfo)) {
+            // set the owning side to null (unless already changed)
+            if ($companyAdditionalInfo->getCompanyAddress() === $this) {
+                $companyAdditionalInfo->setCompanyAddress(null);
+            }
+        }
 
         return $this;
     }

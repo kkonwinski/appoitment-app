@@ -1,0 +1,49 @@
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+{#    {{ form_widget(form) }}#}
+<div class="row">
+    <div class="col-md-4">
+        {{ form_row(form.street) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.city) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.buildingNumber) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.postCode) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.country) }}
+    </div>
+
+</div>
+<div class="row">
+    {{ form_label(form.companyAdditionalInfos) }}
+
+    {% for companyAdditionalInfo in form.companyAdditionalInfos %}
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(companyAdditionalInfo.email) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(companyAdditionalInfo.phone) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form_row(companyAdditionalInfo.facebook) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(companyAdditionalInfo.instagram) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(companyAdditionalInfo.website) }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+    <button class="btn btn-outline-warning">{{ button_label|default('form.save'|trans) }}</button>
+{{ form_end(form) }}

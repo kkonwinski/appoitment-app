@@ -1,11 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block title %}New EmployeeSchedule{% endblock %}
+{#    {% block title %}{{ 'entity.employee_schedule.view.list.title'|trans }}{% endblock %}#}
 
-{% block body %}
-    <h1>Create new EmployeeSchedule</h1>
+    {% block stylesheets %}
+        {{ parent() }}
+        <link href="{{ asset('admin_boostrap/css/jquery-ui.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('admin_boostrap/css/jquery.timepicker.min.css') }}">
+    {% endblock %}
 
-    {{ include('admin/employee_schedule/_partials/_form.html.twig') }}
+    {% block body %}
+        {{ include('admin/employee_schedule/_partials/_form.html.twig') }}
 
-    <a href="{{ path('admin_employee_schedule_list') }}">back to list</a>
-{% endblock %}
+    {% endblock %}
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="{{ asset('admin_boostrap/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('admin_boostrap/jquery.timepicker.min.js') }}"></script>
+
+        <script src="{{ asset('custom/js/datepicker.js') }}"></script>
+    {% endblock %}
+

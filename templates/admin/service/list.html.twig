@@ -1,0 +1,40 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Service index{% endblock %}
+
+{% block body %}
+    <div class="text-right mb-3">
+        <a href="{{ path('admin_service_new') }}" class="btn btn-outline-success ">{{ 'view.service.new'|trans }}</a>
+    </div>
+    <h1>{{ 'view.service.list'|trans }}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>{{ 'view.service.name'|trans }}</th>
+                <th>{{ 'view.service.duration'|trans }}</th>
+                <th>{{ 'view.service.price'|trans }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for service in services %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ service.name }}</td>
+                <td>{{ service.duration }}</td>
+                <td>{{ service.price }}</td>
+                <td>
+                    <a href="{{ path('admin_service_delete', {'id': service.id}) }}">{{ 'view.delete'|trans }}</a>
+                    <a href="{{ path('admin_service_edit', {'id': service.id}) }}">{{ 'view.edit'|trans }}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">{{ 'view.no_records_found'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

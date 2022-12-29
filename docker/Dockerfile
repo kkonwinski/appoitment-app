@@ -24,10 +24,6 @@ RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 
 
-#if docker compose up --build or docker-compose build run composer installer \
-RUN composer install
-
-#run php bin/console d:s:u --force
 RUN php bin/console d:s:u --force
 
 RUN curl -sS https://get.symfony.com/cli/installer | bash

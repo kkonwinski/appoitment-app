@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CompanyAdditionalInfo{% endblock %}
+
+{% block body %}
+    <h1>Create new CompanyAdditionalInfo</h1>
+
+    {{ include('company_additional_info/_form.html.twig') }}
+
+    <a href="{{ path('app_company_additional_info_index') }}">back to list</a>
+{% endblock %}

@@ -8,8 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use function Symfony\Component\Translation\t;
 
 /**
  * @ORM\Entity
@@ -55,11 +58,10 @@ class EmployeeSchedule
     private ?\DateTimeInterface $timeTo = null;
 
     #[ORM\Column]
-    #[Assert\Choice(['entity.employee_schedule.assert.yes', 'entity.employee_schedule.assert.no'])]
     private ?bool $repeatInfinity = false;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "entity.employee_schedule.not_blank")]
+    #[Assert\NotBlank(message: "entity.employee_schedule.assert.not_blank")]
     private ?string $title = null;
 
     public function getId(): ?int
@@ -84,7 +86,7 @@ class EmployeeSchedule
         return $this->dayFrom;
     }
 
-    public function setDayFrom(\DateTimeInterface $dayFrom): self
+    public function setDayFrom(?\DateTimeInterface $dayFrom): self
     {
         $this->dayFrom = $dayFrom;
 
@@ -108,7 +110,7 @@ class EmployeeSchedule
         return $this->timeFrom;
     }
 
-    public function setTimeFrom(\DateTimeInterface $timeFrom): self
+    public function setTimeFrom(?\DateTimeInterface $timeFrom): self
     {
         $this->timeFrom = $timeFrom;
 
@@ -140,19 +142,26 @@ class EmployeeSchedule
     }
 
     //create function check if dayTo is greater than dayFrom, if not add violation
+
+    /**
+     * @throws \Exception
+     */
     #[Assert\Callback]
     public function validateDay(ExecutionContextInterface $context, $payload): void
     {
-        if ($this->dayTo < $this->dayFrom) {
-            $context->buildViolation('entity.employee_schedule.assert.day_to_greater_than_day_from')
-                ->setTranslationDomain('messages')
-                ->atPath('dayTo')
+        //if dayFrom is less than dayTo, if not add violation
+        if ($this->dayFrom < $this->dayTo) {
+            $context->buildViolation('entity.employee_schedule.assert.day_from_greater_than_day_to')
+                ->setTranslationDomain('validators')
+                ->atPath('dayFrom')
                 ->addViolation();
         }
-        //dayFrom is no grater than dayTo, if not add violation
-        if ($this->dayFrom > $this->dayTo) {
-            $context->buildViolation('entity.employee_schedule.assert.day_from_greater_than_day_to')
-                ->setTranslationDomain('messages')
+
+        //if dayFrom is less than day now, if not add violation
+
+        if ($this->dayFrom && $this->dayFrom < new \DateTime($this->dayFrom->format('Y-m-d'))) {
+            $context->buildViolation('entity.employee_schedule.assert.day_from_less_than_day_now')
+                ->setTranslationDomain('validators')
                 ->atPath('dayFrom')
                 ->addViolation();
         }
@@ -162,23 +171,10 @@ class EmployeeSchedule
     #[Assert\Callback]
     public function validateTime(ExecutionContextInterface $context, $payload): void
     {
-        if ($this->timeTo < $this->timeFrom) {
-            $context->buildViolation('entity.employee_schedule.assert.time_to_greater_than_time_from')
-                ->setTranslationDomain('messages')
-                ->atPath('timeTo')
-                ->addViolation();
-        }
-        //timeFrom is no grater than timeTo, if not add violation
-        if ($this->timeFrom > $this->timeTo) {
+        //if timeFrom is less than timeTo, if not add violation
+        if ($this->timeTo && $this->timeFrom > $this->timeTo) {
             $context->buildViolation('entity.employee_schedule.assert.time_from_greater_than_time_to')
-                ->setTranslationDomain('messages')
-                ->atPath('timeFrom')
-                ->addViolation();
-        }
-        //timeFrom mus be bigger than time now
-        if ($this->timeFrom < new \DateTime('now')) {
-            $context->buildViolation('entity.employee_schedule.assert.time_from_greater_than_time_now')
-                ->setTranslationDomain('messages')
+                ->setTranslationDomain('validators')
                 ->atPath('timeFrom')
                 ->addViolation();
         }
@@ -195,5 +191,4 @@ class EmployeeSchedule
 
         return $this;
     }
-
 }

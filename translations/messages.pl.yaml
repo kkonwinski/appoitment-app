@@ -3,28 +3,58 @@ admin:
     manage_employee: Zarządzaj pracownikami
     employees: Pracownicy
     employee_work_schedule: Harmonogram pracy
+    employee_work_schedule_new: Nowy harmonogram
     employee_work_schedule_manage: Zarządzaj harmonogramem
 entity:
   user:
     fullname: Imię i Nazwisko
   employee_schedule:
     not_blank: To pole nie może być puste!
-    assert:
-      yes: Tak
-      no: Nie
-      day_to_greater_than_day_from: Data początkowa nie może być większa niż data końcowa!
-      day_from_greater_than_day_to: Data końcowa nie może być mniejsza niż data początkowa!
-      time_to_greater_than_time_from: Godzina zakończenia nie może być wcześniejsza niż godzina rozpoczęcia!
-      time_from_greater_than_time_to: Godzina rozpoczęcia nie może być późniejsza niż godzina zakończenia!
-      time_from_greater_than_time_now: Godzina rozpoczęcia nie może być wcześniejsza niż aktualna godzina!
-    view:
-      no_records_found: Brak rekordów
-      list:
-        title: Harmonogram pracy
+  service:
+    not_blank: To pole nie może być puste!
 view:
+  no_records_found: Nie znaleziono rekordów
   edit: Edytuj
   delete: Usuń
   save: Zapisz
+  are_you_sure_delete: Napewno checesz usunąć tą pozycje?
+  back_to_list: Wróć do listy
+  employee_schedule:
+    list: Harmonogramy pracy
+    new: Nowy harmonogram
+    date_range: Zakres dat
+    edit: Edytuj harmonogram
+  employee:
+    list: Pracownicy
+    new: Nowy pracownik
+    edit: Edytuj pracownika
+  company:
+    manage_company: Zarządzaj firmą
+    new: Nowa firma
+    company: Firma
+  company_address:
+    back_to_company_address: Wróć do adresów firmy
+    edit: Edytuj adres firmy
+    new: Nowy adres firmy
+    list: Adresy firmy
+    street: Ulica
+    city: Miasto
+    post_code: Kod pocztowy
+    country: Kraj
+    building_number: Numer budynku
+  service:
+    list: Lista usług
+    new: Nowa usługa
+    edit: Edytuj usługę
+    name: Nazwa
+    price: Cena
+    duration: Czas trwania
+    description: Opis
+    back_to_service_list: Wróć do listy usług
+
+
+
+
 login:
   password: Hasło
   email: Wprowadz adres e-mail
@@ -37,3 +67,42 @@ logout:
   logout_btn: Wyloguj
   cancel_btn: Anuluj
   modal_description: Jeśli wylogujesz się, nie będziesz mógł ponownie uzyskać dostępu do tego konta, dopóki nie zalogujesz się ponownie.
+form:
+  save: Zapisz
+  employee_schedule:
+    day_from: Data początkowa
+    day_to: Data końcowa
+    time_from: Godzina początkowa
+    time_to: Godzina końcowa
+    title: Tytuł
+    repeat_infinity: Powtarzaj bez końca
+  company:
+    name: Nazwa firmy
+    create_new_company: Utwórz nową firmę
+  company_address:
+    company_address_label: Dane adresowe firmy
+    street: Ulica
+    city: Miasto
+    post_code: Kod pocztowy
+    country: Kraj
+    building_number: Numer budynku
+  employee:
+    name: Imię
+    surname: Nazwisko
+  company_additional_info:
+    company_additional_info_label: Dodatkowe informacje placówki
+    phone: Telefon
+    website: Strona www
+    facebook: Facebook
+    instagram: Instagram
+    email: Email
+  service:
+    name: Nazwa usługi
+    price: Kwota usługi
+    description: Opis usługi
+    duration: Czas trwania usługi (w minutach)
+
+
+exception:
+  company_address:
+    not_belongs_to_user: Adres firmy nie należy do użytkownika!

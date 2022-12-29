@@ -47,16 +47,13 @@ class Company
     private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class)]
-    private Collection $companyAddresses;
+    private Collection $companyAddress;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAdditionalInfo::class, orphanRemoval: true)]
-    private Collection $companyAdditionalInfo;
 
     public function __construct()
     {
         $this->user = new ArrayCollection();
-        $this->companyAddresses = new ArrayCollection();
-        $this->companyAdditionalInfo = new ArrayCollection();
+        $this->companyAddress = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,15 +118,15 @@ class Company
     /**
      * @return Collection<int, CompanyAddress>
      */
-    public function getCompanyAddresses(): Collection
+    public function getCompanyAddress(): Collection
     {
-        return $this->companyAddresses;
+        return $this->companyAddress;
     }
 
     public function addCompanyAddress(CompanyAddress $companyAddress): self
     {
-        if (!$this->companyAddresses->contains($companyAddress)) {
-            $this->companyAddresses->add($companyAddress);
+        if (!$this->companyAddress->contains($companyAddress)) {
+            $this->companyAddress->add($companyAddress);
             $companyAddress->setCompany($this);
         }
 
@@ -138,7 +135,7 @@ class Company
 
     public function removeCompanyAddress(CompanyAddress $companyAddress): self
     {
-        if ($this->companyAddresses->removeElement($companyAddress)) {
+        if ($this->companyAddress->removeElement($companyAddress)) {
             // set the owning side to null (unless already changed)
             if ($companyAddress->getCompany() === $this) {
                 $companyAddress->setCompany(null);
@@ -148,34 +145,6 @@ class Company
         return $this;
     }
 
-    /**
-     * @return Collection<int, CompanyAdditionalInfo>
-     */
-    public function getCompanyAdditionalInfo(): Collection
-    {
-        return $this->companyAdditionalInfo;
-    }
 
-    public function addCompanyAdditionalInfo(CompanyAdditionalInfo $companyAdditionalInfo): self
-    {
-        if (!$this->companyAdditionalInfo->contains($companyAdditionalInfo)) {
-            $this->companyAdditionalInfo->add($companyAdditionalInfo);
-            $companyAdditionalInfo->setCompany($this);
-        }
 
-        return $this;
-    }
-
-    public function removeCompanyAdditionalInfo(CompanyAdditionalInfo $companyAdditionalInfo): self
-    {
-        // set the owning side to null (unless already changed)
-        if (
-            $this->companyAdditionalInfo->removeElement($companyAdditionalInfo) &&
-            $companyAdditionalInfo->getCompany() === $this
-        ) {
-            $companyAdditionalInfo->setCompany(null);
-        }
-
-        return $this;
-    }
 }

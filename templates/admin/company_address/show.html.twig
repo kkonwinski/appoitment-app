@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CompanyAddress{% endblock %}
+
+{% block body %}
+    <h1>CompanyAddress</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ company_address.id }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ company_address.city }}</td>
+            </tr>
+            <tr>
+                <th>PostCode</th>
+                <td>{{ company_address.postCode }}</td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>{{ company_address.country }}</td>
+            </tr>
+            <tr>
+                <th>Street</th>
+                <td>{{ company_address.street }}</td>
+            </tr>
+            <tr>
+                <th>BuildingNumber</th>
+                <td>{{ company_address.buildingNumber }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_company_address_index') }}">back to list</a>
+
+    <a href="{{ path('app_company_address_edit', {'id': company_address.id}) }}">edit</a>
+
+    {{ include('company_address/_delete_form.html.twig') }}
+{% endblock %}
