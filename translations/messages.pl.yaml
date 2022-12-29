@@ -10,6 +10,8 @@ entity:
     fullname: Imię i Nazwisko
   employee_schedule:
     not_blank: To pole nie może być puste!
+  service:
+    not_blank: To pole nie może być puste!
 view:
   edit: Edytuj
   delete: Usuń
@@ -39,6 +41,10 @@ view:
     post_code: Kod pocztowy
     country: Kraj
     building_number: Numer budynku
+  service:
+    list: Lista usług
+    new: Nowa usługa
+    edit: Edytuj usługę
 
 
 
@@ -84,6 +90,12 @@ form:
     facebook: Facebook
     instagram: Instagram
     email: Email
+  service:
+    name: Nazwa usługi
+    price: Kwota usługi
+    description: Opis usługi
+    duration: Czas trwania usługi (w minutach)
+
 
 exception:
   company_address:
