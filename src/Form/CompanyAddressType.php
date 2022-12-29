@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\CompanyAdditionalInfo;
 use App\Entity\CompanyAddress;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -10,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Intl\Languages;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CompanyAddressType extends AbstractType
@@ -62,7 +60,6 @@ class CompanyAddressType extends AbstractType
                     'entry_options' => ['label' => false],
                     'allow_add' => true,
                     'label' => 'form.company_address.company_address_label',
-//                    'data' => $builder->getData()->getCompanyAdditionalInfos()
                     ]
             );
     }
