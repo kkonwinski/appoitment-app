@@ -1,13 +1,12 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Edit CompanyAddress{% endblock %}
+{% block title %}{{ 'view.company_address.edit'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Edit CompanyAddress</h1>
+    <h1>{{ 'view.company_address.edit'|trans }}</h1>
 
     {{ include('admin/company_address/_form.html.twig', {'button_label': 'view.edit'|trans}) }}
 
-{#    <a href="{{ path('app_company_address_index') }}">back to list</a>#}
+    <a href="{{ path('admin_company_address_list') }}" class="btn btn-outline-info">{{ 'view.company_address.back_to_company_address'|trans }}</a>
 
-{#    {{ include('company_address/_delete_form.html.twig') }}#}
 {% endblock %}

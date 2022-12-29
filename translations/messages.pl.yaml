@@ -30,6 +30,8 @@ view:
     new: Nowa firma
     company: Firma
   company_address:
+    back_to_company_address: Wróć do adresów firmy
+    edit: Edytuj adres firmy
     new: Nowy adres firmy
     list: Adresy firmy
     street: Ulica
