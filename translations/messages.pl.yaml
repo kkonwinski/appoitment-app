@@ -86,6 +86,7 @@ form:
     post_code: Kod pocztowy
     country: Kraj
     building_number: Numer budynku
+    service_placeholder: Wybierz usługę wykonywaną pod tym adresem
   employee:
     name: Imię
     surname: Nazwisko

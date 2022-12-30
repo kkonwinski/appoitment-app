@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ServiceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\SoftDeleteable;
@@ -47,6 +49,14 @@ class Service
 
     #[ORM\Column]
     private ?float $price = null;
+
+    #[ORM\ManyToMany(targetEntity: CompanyAddress::class, mappedBy: 'service',cascade: ['persist','remove'])]
+    private Collection $companyAddresses;
+
+    public function __construct()
+    {
+        $this->companyAddresses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -96,6 +106,33 @@ class Service
     public function setPrice(float $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompanyAddress>
+     */
+    public function getCompanyAddresses(): Collection
+    {
+        return $this->companyAddresses;
+    }
+
+    public function addCompanyAddress(CompanyAddress $companyAddress): self
+    {
+        if (!$this->companyAddresses->contains($companyAddress)) {
+            $this->companyAddresses->add($companyAddress);
+            $companyAddress->addService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompanyAddress(CompanyAddress $companyAddress): self
+    {
+        if ($this->companyAddresses->removeElement($companyAddress)) {
+            $companyAddress->removeService($this);
+        }
 
         return $this;
     }

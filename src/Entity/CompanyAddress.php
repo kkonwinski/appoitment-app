@@ -68,9 +68,13 @@ class CompanyAddress
     #[ORM\ManyToOne(inversedBy: 'companyAddress')]
     private ?Company $company = null;
 
+    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'companyAddresses', cascade: ['persist','remove'])]
+    private Collection $service;
+
     public function __construct()
     {
         $this->companyAdditionalInfos = new ArrayCollection();
+        $this->service = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -177,6 +181,30 @@ class CompanyAddress
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Service>
+     */
+    public function getService(): Collection
+    {
+        return $this->service;
+    }
+
+    public function addService(Service $service): self
+    {
+        if (!$this->service->contains($service)) {
+            $this->service->add($service);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Service $service): self
+    {
+        $this->service->removeElement($service);
 
         return $this;
     }

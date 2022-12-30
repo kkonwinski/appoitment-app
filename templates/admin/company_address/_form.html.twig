@@ -44,6 +44,9 @@
             </div>
         </div>
     {% endfor %}
+
 </div>
+{{ form_row(form.service) }}
+
     <button class="btn btn-outline-warning">{{ button_label|default('form.save'|trans) }}</button>
 {{ form_end(form) }}
