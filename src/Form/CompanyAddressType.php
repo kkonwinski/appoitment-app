@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\CompanyAddress;
+use App\Entity\Service;
+use App\Repository\ServiceRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -10,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\Autocomplete\DependencyInjection\AutocompleteExtension;
 
 class CompanyAddressType extends AbstractType
 {
@@ -61,7 +65,18 @@ class CompanyAddressType extends AbstractType
                     'allow_add' => true,
                     'label' => 'form.company_address.company_address_label',
                     ]
-            );
+            )
+        ->add('service', EntityType::class, [
+            'class' => Service::class,
+            'multiple' => true,
+            'query_builder' => function (ServiceRepository $er) {
+                return $er->createQueryBuilder('s')
+                    ->orderBy('s.name', 'ASC');
+            },
+            'choice_label' => 'name',
+            'label' => 'form.company_address.service_placeholder',
+            'autocomplete' => true,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
