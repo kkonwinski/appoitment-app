@@ -12,7 +12,7 @@
         <link href="{{ asset('admin_boostrap/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('admin_boostrap/css/sb-admin-2.css') }}" rel="stylesheet"/>
         <link href="{{ asset('custom/css/style.scss') }}" rel="stylesheet"/>
-        {#        {{ encore_entry_link_tags('app') }} #}
+                {{ encore_entry_link_tags('app') }}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
               integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
               crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -47,6 +47,6 @@
     <script src="{{ asset('admin_boostrap/js/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('admin_boostrap/js/sb-admin-2.js') }}"></script>
     <script src="{{ asset('custom/js/avatar.js') }}"></script>
-    {#        {{ encore_entry_script_tags('app') }} #}
+            {{ encore_entry_script_tags('app') }}
 {% endblock %}
 </html>

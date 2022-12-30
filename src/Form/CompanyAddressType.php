@@ -74,7 +74,7 @@ class CompanyAddressType extends AbstractType
                     ->orderBy('s.name', 'ASC');
             },
             'choice_label' => 'name',
-            'placeholder' => 'form.company_address.service_placeholder',
+            'label' => 'form.company_address.service_placeholder',
             'autocomplete' => true,
         ]);
     }
