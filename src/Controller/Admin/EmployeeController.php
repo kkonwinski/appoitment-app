@@ -53,13 +53,17 @@ class EmployeeController extends AbstractController
         ]);
     }
     #[Route('/{slug}/edit', name: 'edit')]
-    public function edit(User $employee, UserRepository $userRepository): Response
-    {
+    public function edit(
+        User $employee,
+        UserRepository $userRepository,
+        Request $request
+    ): Response {
         $form = $this->createForm(EmployeeType::class, $employee);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->save($employee, true);
 
-            return $this->redirectToRoute('admin_dashboard', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_employee_list', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('admin/employee/edit.html.twig', [
             'form' => $form,
