@@ -1,4 +1,4 @@
-<form method="post" action="{{ path('app_employee_schedule_delete', {'id': employee_schedule.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ employee_schedule.id) }}">
-    <button class="btn">Delete</button>
+<form method="post" action="{{ path('admin_employee_schedule_delete', {'id': employeeSchedule.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ employeeSchedule.id) }}">
+    <button class="btn btn-outline-danger">{{ 'view.delete'|trans }}</button>
 </form>

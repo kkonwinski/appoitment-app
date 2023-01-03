@@ -1,13 +1,14 @@
-$( function() {
-    $( ".js-datepicker" ).datepicker({
+$(function () {
+    $(".js-datepicker").datepicker({
+        firstDay: 1,
         dateFormat: "yy-mm-dd"
-        }
-    )
+        })
+
     $(".js-timepicker").timepicker({
         timeFormat: 'HH:mm',
-        interval: 10,
-        dynamic: false,
+        interval: 30,
+        dynamic: true,
         dropdown: true,
         scrollbar: true
     });
-} );
+});

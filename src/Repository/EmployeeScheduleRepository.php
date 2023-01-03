@@ -61,6 +61,10 @@ class EmployeeScheduleRepository extends ServiceEntityRepository
             ->leftJoin('es.user', 'u')
             ->andWhere('u = :user')
             ->setParameter('user', $user)
+            ->andWhere('es.dayTo > :dayTo')
+            ->setParameter('dayTo', new \DateTime('today'))
+            ->andWhere('es.timeTo < :timeTo')
+            ->setParameter('timeTo', new \DateTime('now'))
             ->getQuery()
             ->getResult();
     }

@@ -24,6 +24,8 @@ view:
     new: Nowy harmonogram
     date_range: Zakres dat
     edit: Edytuj harmonogram
+    no_records_employee_schedule: Nie znaleziono harmonogramów
+    back_to_employee_schedule_list: Wróć do listy harmonogramów
   employee:
     list: Pracownicy
     new: Nowy pracownik
