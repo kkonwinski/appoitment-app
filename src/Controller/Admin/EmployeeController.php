@@ -2,8 +2,10 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\CompanyAddress;
 use App\Entity\User;
 use App\Form\EmployeeType;
+use App\Repository\CompanyAddressRepository;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -49,5 +51,30 @@ class EmployeeController extends AbstractController
         return $this->renderForm('admin/employee/new.html.twig', [
             'form' => $form,
         ]);
+    }
+    #[Route('/{slug}/edit', name: 'edit')]
+    public function edit(User $employee, UserRepository $userRepository): Response
+    {
+        $form = $this->createForm(EmployeeType::class, $employee);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userRepository->save($employee, true);
+
+            return $this->redirectToRoute('admin_dashboard', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('admin/employee/edit.html.twig', [
+            'form' => $form,
+        ]);
+    }
+    #[Route('/{id}/delete', name: 'delete', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        User $employee,
+        UserRepository $userRepository
+    ): Response {
+        if ($this->isCsrfTokenValid('delete' . $employee->getId(), $request->request->get('_token'))) {
+            $userRepository->remove($employee, true);
+        }
+
+        return $this->redirectToRoute('admin_employee_list', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -28,6 +28,7 @@ view:
     list: Pracownicy
     new: Nowy pracownik
     edit: Edytuj pracownika
+    back_to_employee_list: Wróć do listy pracowników
   company:
     manage_company: Zarządzaj firmą
     new: Nowa firma

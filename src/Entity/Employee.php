@@ -16,20 +16,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
  */
-#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false, hardDelete: true)]
 trait Employee
 {
-    /**
-     * Hook timestampable behavior
-     * updates createdAt, updatedAt fields
-     */
-    use TimestampableEntity;
 
-    /**
-     * Hook SoftDeleteable behavior
-     * updates deletedAt field
-     */
-    use SoftDeleteableEntity;
 
     #[ORM\ManyToOne(inversedBy: 'user')]
     private ?Company $company = null;
