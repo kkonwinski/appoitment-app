@@ -20,3 +20,7 @@ entity:
       email: Nieprawidłowy adres email!
       url: Nieprawidłowy adres URL!
       phone: Numer telefonu musi być w formacie +48000000000
+  company_opening_hours:
+    assert:
+      not_blank: To pole nie może być puste!
+      time_from_greater_than_time_to: Godzina początkowa musi być mniejsza od godziny końcowej!

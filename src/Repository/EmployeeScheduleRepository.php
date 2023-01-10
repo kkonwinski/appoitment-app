@@ -63,8 +63,6 @@ class EmployeeScheduleRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->andWhere('es.dayTo > :dayTo')
             ->setParameter('dayTo', new \DateTime('today'))
-            ->andWhere('es.timeTo < :timeTo')
-            ->setParameter('timeTo', new \DateTime('now'))
             ->getQuery()
             ->getResult();
     }
