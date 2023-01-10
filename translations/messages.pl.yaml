@@ -105,6 +105,16 @@ form:
     price: Kwota usługi
     description: Opis usługi
     duration: Czas trwania usługi (w minutach)
+  company_open_hours_days:
+    monday: Poniedziałek
+    tuesday: Wtorek
+    wednesday: Środa
+    thursday: Czwartek
+    friday: Piątek
+    saturday: Sobota
+    sunday: Niedziela
+    day_name: Dzień tygodnia
+    label: Godziny otwarcia
 
 
 exception:

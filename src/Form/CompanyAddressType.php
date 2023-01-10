@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\CompanyAddress;
+use App\Entity\CompanyOpenHours;
 use App\Entity\Service;
+use App\Repository\CompanyOpenHoursRepository;
 use App\Repository\ServiceRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -83,6 +85,19 @@ class CompanyAddressType extends AbstractType
             'label' => 'form.company_address.service_placeholder',
             'autocomplete' => true,
         ]);
+//        ->add('companyOpenHours', EntityType::class, [
+//            'class' => CompanyOpenHours::class,
+//            'query_builder' => function (CompanyOpenHoursRepository $er) use ($companyAddress) {
+//                return $er->createQueryBuilder('coh')
+//                    ->orderBy('coh.dayName', 'ASC')
+//                    ->join('coh.companyAddress', 'ca')
+//                    ->andWhere('ca = :companyAddress')
+//                    ->setParameter('companyAddress', $companyAddress);
+//            },
+//               'choice_label' => 'dayName',
+//            'label' => 'form.company_open_hours_days.label',
+//            'required' => true
+//        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

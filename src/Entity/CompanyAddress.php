@@ -71,7 +71,7 @@ class CompanyAddress
     #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'companyAddresses', cascade: ['persist','remove'])]
     private Collection $service;
 
-    #[ORM\OneToMany(mappedBy: 'companyAddress', targetEntity: CompanyOpenHours::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'companyAddress', targetEntity: CompanyOpenHours::class, orphanRemoval: true, cascade: ['persist','remove'])]
     private Collection $companyOpenHours;
 
     public function __construct()

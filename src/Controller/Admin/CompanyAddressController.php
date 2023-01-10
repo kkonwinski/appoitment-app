@@ -43,11 +43,11 @@ class CompanyAddressController extends AbstractController
             $form->isValid()
         ) {
             $companyAddress->setCompany($this->getUser()->getCompany());
+            $companyAddress->addCompanyOpenHour($this->getUser()->getCompany());
             $companyAddressRepository->save($companyAddress, true);
 
             return $this->redirectToRoute('admin_company_address_list', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('admin/company_address/new.html.twig', [
             'companyAddress' => $companyAddress,
             'form' => $form,
@@ -73,7 +73,6 @@ class CompanyAddressController extends AbstractController
 
             return $this->redirectToRoute('admin_company_address_list', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('admin/company_address/edit.html.twig', [
             'companyAddress' => $companyAddress,
             'form' => $form,

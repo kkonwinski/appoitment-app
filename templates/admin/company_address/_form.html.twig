@@ -18,7 +18,7 @@
     <div class="col-md-6">
         {{ form_row(form.country) }}
     </div>
-
+{#{{ form_row(form.companyOpenHours.dayName) }}#}
 </div>
 <div class="row">
     {{ form_label(form.companyAdditionalInfos) }}
@@ -46,6 +46,9 @@
     {% endfor %}
 
 </div>
+{#{% for companyOpenHour in form.companyOpenHours %}#}
+{#{{ form_row(form.companyOpenHour.dayName) }}#}
+{#{% endfor %}#}
 {{ form_row(form.service) }}
 
     <button class="btn btn-outline-warning">{{ button_label|default('form.save'|trans) }}</button>
