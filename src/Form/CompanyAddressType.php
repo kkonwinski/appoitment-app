@@ -19,6 +19,8 @@ class CompanyAddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
+        $companyAddress = $builder->getData();
         $builder
             ->add('city', TextType::class, [
                 'required' => true,
@@ -69,9 +71,13 @@ class CompanyAddressType extends AbstractType
         ->add('service', EntityType::class, [
             'class' => Service::class,
             'multiple' => true,
-            'query_builder' => function (ServiceRepository $er) {
+            'query_builder' => function (ServiceRepository $er) use ($companyAddress) {
                 return $er->createQueryBuilder('s')
-                    ->orderBy('s.name', 'ASC');
+                    ->orderBy('s.name', 'ASC')
+                    ->join('s.companyAddresses', 'ca')
+                    ->andWhere('ca = :companyAddress')
+                    ->andWhere('s.deletedAt IS NULL')
+                    ->setParameter('companyAddress', $companyAddress);
             },
             'choice_label' => 'name',
             'label' => 'form.company_address.service_placeholder',

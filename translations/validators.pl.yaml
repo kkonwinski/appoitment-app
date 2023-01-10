@@ -19,4 +19,4 @@ entity:
     assert:
       email: Nieprawidłowy adres email!
       url: Nieprawidłowy adres URL!
-      phone: Numer telefonu musi być w formacie +48 000 000 000
+      phone: Numer telefonu musi być w formacie +48000000000

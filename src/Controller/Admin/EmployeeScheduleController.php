@@ -16,16 +16,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('admin/employee/schedule', name: 'admin_employee_schedule_')]
 class EmployeeScheduleController extends AbstractController
 {
-    #[Route('/list/{id}', name: 'list', methods: ['GET', 'POST'])]
+    private PaginatorInterface $paginator;
+
+    public function __construct(PaginatorInterface $paginator)
+    {
+        $this->paginator = $paginator;
+    }
+
+    #[Route('/list/{slug}', name: 'list', methods: ['GET', 'POST'])]
     public function list(
         User $user,
         EmployeeScheduleRepository $employeeScheduleRepository,
         Request $request,
-        PaginatorInterface $paginator
+
     ): Response {
 
 
-        $employeeSchedules = $paginator->paginate(
+        $employeeSchedules = $this->paginator->paginate(
             $employeeScheduleRepository->findEmployeeSchedulesByUser($user), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
@@ -78,11 +85,21 @@ class EmployeeScheduleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $employeeScheduleRepository->save($employeeSchedule, true);
 
-            return $this->redirectToRoute('admin_employee_schedule_list', [], Response::HTTP_SEE_OTHER);
+            $employeeSchedules = $this->paginator->paginate(
+                $employeeScheduleRepository->findEmployeeSchedulesByUser($employeeSchedule->getUser()), /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                10 /*limit per page*/
+            );
+
+            return $this->render('admin/employee_schedule/list.html.twig', [
+           'employeeSchedules' => $employeeSchedules,
+            'user' => $employeeSchedule->getUser(),
+        ]);
+
         }
 
-        return $this->renderForm('employee_schedule/edit.html.twig', [
-            'employee_schedule' => $employeeSchedule,
+        return $this->renderForm('admin/employee_schedule/edit.html.twig', [
+            'employeeSchedule' => $employeeSchedule,
             'form' => $form,
         ]);
     }

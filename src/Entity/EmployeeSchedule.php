@@ -150,7 +150,7 @@ class EmployeeSchedule
     public function validateDay(ExecutionContextInterface $context, $payload): void
     {
         //if dayFrom is less than dayTo, if not add violation
-        if ($this->dayFrom < $this->dayTo) {
+        if ($this->dayFrom > $this->dayTo) {
             $context->buildViolation('entity.employee_schedule.assert.day_from_greater_than_day_to')
                 ->setTranslationDomain('validators')
                 ->atPath('dayFrom')

@@ -33,7 +33,7 @@ class CompanyAdditionalInfo
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Regex([
-        'pattern' => '/^(\+48|0048|48|0)?[0-9]{9}$/',
+        'pattern' => '/(7|8|9)\d{9}/',
         'message' => 'entity.company_additional_info.assert.phone',
     ])]
     private ?string $phone = null;

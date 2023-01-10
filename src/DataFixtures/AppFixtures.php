@@ -6,6 +6,7 @@ use App\Entity\Company;
 use App\Entity\CompanyAdditionalInfo;
 use App\Entity\CompanyAddress;
 use App\Entity\EmployeeSchedule;
+use App\Entity\Service;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -22,7 +23,6 @@ class AppFixtures extends Fixture
     {
         $this->hasher = $hasher;
     }
-
 
     /**
      * @throws Exception
@@ -44,7 +44,12 @@ class AppFixtures extends Fixture
                 $user->setFirstname($this->faker->firstName);
                 $user->setLastname($this->faker->lastName);
                 if ($j === 0) {
-                    $user->setRoles(['ROLE_OWNER']);
+                    if ($i === 0) {
+                        $user->setEmail('k.konwinski@onet.pl');
+                        $user->setRoles(['ROLE_ADMIN','ROLE_OWNER']);
+                    } else {
+                        $user->setRoles(['ROLE_OWNER']);
+                    }
                 } else {
                     $user->setRoles(['ROLE_EMPLOYEE']);
                 }
@@ -56,72 +61,74 @@ class AppFixtures extends Fixture
                 $companyAddress = new CompanyAddress();
                 $companyAddress->setCompany($company);
                 $companyAddress->setCity($this->faker->city);
-                $companyAddress->setStreet($this->faker->streetAddress);
+                $companyAddress->setStreet($this->faker->streetName);
                 $companyAddress->setPostCode($this->faker->postcode);
                 $companyAddress->setCountry($this->faker->country);
-                $companyAddress->setBuildingNumber($this->faker->buildingNumber);
+                $companyAddress->setBuildingNumber($this->faker->randomNumber(3));
                 $companyAddress->setCompany($company);
                 $manager->persist($companyAddress);
+                for ($h = 0; $h < 40; $h++) {
+                    //create one or two services for company address
+                    $service = new Service();
+                    $service->setName($this->faker->text(10));
+                    $service->setPrice($this->faker->randomFloat(2, 10, 100));
+                    //duration is random from 10 to 120 minutes
+                    $service->setDuration(random_int(10, 120));
+                    //add description as random words 10
+                    $service->setDescription($this->faker->words(10, true));
+//                    $service->setDescription($this->faker->text(100));
+                    $service->addCompanyAddress($companyAddress);
+                    $manager->persist($service);
+                }
+                for ($k = 0; $k < random_int(1, 2); $k++) {
+                    $companyAdditionalInfo = new CompanyAdditionalInfo();
+                    if (random_int(0, 1) === 1) {
+                        $companyAdditionalInfo->setEmail(
+                            $this->slugify($user->getFullName()) .
+                            '@' .
+                            $this->slugify($company->getName()) .
+                            $this->faker->domainName
+                        );
+                    }
+                    if (random_int(0, 1) === 1) {
+                        $companyAdditionalInfo->setFacebook(
+                            'https://facebook.com/' .
+                            $this->slugify($user->getFullName())
+                        );
+                    }
+                    if (random_int(0, 1) === 1) {
+                        $companyAdditionalInfo->setInstagram(
+                            'https://instagram.com/' .
+                            $this->slugify($user->getFullName())
+                        );
+                    }
+                    if (random_int(0, 1) === 1) {
+                        $companyAdditionalInfo->setWebsite(
+                            'https://' .
+                            $this->slugify($company->getName()) .
+                            $this->faker->domainName
+                        );
+                    }
+                    //set phone number
+                    $companyAdditionalInfo->setPhone($this->faker->phoneNumber);
+
+                    $companyAdditionalInfo->setCompanyAddress($companyAddress);
+                    $manager->persist($companyAdditionalInfo);
+                }
             }
-            for ($j = 0; $j < random_int(1, 2); $j++) {
-                $companyAdditionalInfo = new CompanyAdditionalInfo();
-                // $companyAdditionalInfo->setPhone($this->faker->phoneNumber);
-                //add data randomly email, facebook, instagram, website
-                if (random_int(0, 1) === 1) {
-                    //set email  firstname lastname @ company name random domain
-                    $companyAdditionalInfo->setEmail(
-                        $user->getFullName() . '@' . $company->getName() . '.' . $this->faker->domainName
-                    );
-                }
-                if (random_int(0, 1) === 1) {
-                    //set facegoow by facebook.com/company name
-                    $companyAdditionalInfo->setFacebook('https://facebook.com/' . $company->getName());
-                }
-                if (random_int(0, 1) === 1) {
-                    $companyAdditionalInfo->setInstagram($this->faker->url);
-                }
-                if (random_int(0, 1) === 1) {
-                    $companyAdditionalInfo->setWebsite(
-                        'https://' .
-                        $company->getName()
-                        . '.' .
-                        $this->faker->domainName
-                    );
-                }
 
-                $companyAdditionalInfo->setCompany($company);
-                $manager->persist($companyAdditionalInfo);
-            }
-            //to each company add  5 schedules for employees, set dayFrom
-            // radomly from now to end as new weekend  and dayTo from now to end as new weekend
-            for ($j = 0; $j < 5; $j++) {
-                $employeeSchedule = new EmployeeSchedule();
-                //set title as first name and last name user and random text
 
-                $employeeSchedule->setTitle(
-                    $user->getFirstname() . ' ' .
-                    $user->getLastname() . ' ' .
-                    $this->faker->text(5)
-                );
-                $employeeSchedule->setDayFrom($this->faker->dateTimeBetween('now', '+1 week'));
-
-                $employeeSchedule->setTimeFrom($this->createRandomlyTime());
-//set setTimeTo if setRepeatInfinity is false
-                $employeeSchedule->setRepeatInfinity(random_int(0, 1));
-
-                if ($employeeSchedule->isRepeatInfinity() === false) {
-                    $employeeSchedule->setTimeTo($this->createRandomlyTime());
-                    $employeeSchedule->setDayTo($this->faker->dateTimeBetween('now', '+1 week'));
-                }
-                //dd($repeatInfinity);
-                $this->checkDayFromAndDayTo($employeeSchedule);
-                $employeeSchedule->setUser($user);
-                $manager->persist($employeeSchedule);
-            }
+            $manager->flush();
+            //create 40 services for each company address
         }
+    }
 
-        $manager->flush();
-        $manager->flush();
+    private function slugify(string $string): string
+    {
+        $string = preg_replace('/\s+/', '-', $string);
+        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string);
+        $string = strtolower($string);
+        return trim($string, '-');
     }
 
     /**

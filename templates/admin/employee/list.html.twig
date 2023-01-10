@@ -21,9 +21,10 @@
                     <td>{{ loop.index }}</td>
                     <td>{{ employee.fullname }}</td>
 
-                    <td>
-                        <a href="{{ path('admin_employee_schedule_list',{'id':employee.id}) }}" class="btn btn-outline-primary">{{ 'view.employee_schedule.list'|trans }}</a>
-
+                    <td class="d-flex justify-content-evenly">
+                        <a href="{{ path('admin_employee_edit', {'slug': employee.slug}) }}" class="btn btn-outline-warning">{{ 'view.employee.edit'|trans }}</a>
+                        <a href="{{ path('admin_employee_schedule_list',{'slug':employee.slug}) }}" class="btn btn-outline-primary">{{ 'view.employee_schedule.list'|trans }}</a>
+                        {{ include('admin/employee/_partials/_delete_form.html.twig') }}
                     </td>
                 </tr>
             {% else %}
