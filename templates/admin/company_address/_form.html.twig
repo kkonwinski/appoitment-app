@@ -1,5 +1,5 @@
 {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
-{#    {{ form_widget(form) }}#}
+{#    {{ form_widget(form) }} #}
 <div class="row">
     <div class="col-md-4">
         {{ form_row(form.street) }}
@@ -18,7 +18,7 @@
     <div class="col-md-6">
         {{ form_row(form.country) }}
     </div>
-{#{{ form_row(form.companyOpenHours.dayName) }}#}
+    {# {{ form_row(form.companyOpenHours.dayName) }} #}
 </div>
 <div class="row">
     {{ form_label(form.companyAdditionalInfos) }}
@@ -44,12 +44,30 @@
             </div>
         </div>
     {% endfor %}
-
 </div>
-{#{% for companyOpenHour in form.companyOpenHours %}#}
-{#{{ form_row(form.companyOpenHour.dayName) }}#}
-{#{% endfor %}#}
-{{ form_row(form.service) }}
 
-    <button class="btn btn-outline-warning">{{ button_label|default('form.save'|trans) }}</button>
+<div>
+    {{ form_row(form.service) }}
+</div>
+<div class="row">
+    <label class="col-md-12">{{ form_label(form.companyOpenHours) }}</label>
+    {% for companyHour in form.companyOpenHours %}
+        <div class="openHours">
+            <div class="row">
+                <div class="col-12 d-flex">
+                    <div class="col-6">{{ form_row(companyHour.dayName) }} </div>
+                    <div class="col-3">   {{ form_row(companyHour.openFrom) }} </div>
+                    <div class="col-3">   {{ form_row(companyHour.openTo) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="col-12 text-end">
+        <i class="fas fa-fw fa-plus addOpenHoursBtn"></i>
+    </div>
+</div>
+
+<button class="btn btn-outline-warning">{{ button_label|default('form.save'|trans) }}</button>
 {{ form_end(form) }}

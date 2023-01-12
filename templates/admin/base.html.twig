@@ -42,11 +42,12 @@
 
 </body>
 {% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
     <script src="{{ asset('admin_boostrap/jquery.min.js') }}"></script>
     <script src="{{ asset('admin_boostrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('admin_boostrap/js/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('admin_boostrap/js/sb-admin-2.js') }}"></script>
     <script src="{{ asset('custom/js/avatar.js') }}"></script>
-            {{ encore_entry_script_tags('app') }}
+
 {% endblock %}
 </html>

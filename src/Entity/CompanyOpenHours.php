@@ -35,7 +35,7 @@ class CompanyOpenHours
     #[Assert\NotBlank(message: 'entity.company_opening_hours.assert.not_blank')]
     private ?\DateTimeInterface $openTo = null;
 
-    #[ORM\ManyToOne(inversedBy: 'companyOpenHours',cascade: ['persist'])]
+    #[ORM\ManyToOne(cascade: ['persist','remove'], inversedBy: 'companyOpenHours')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CompanyAddress $companyAddress = null;
 

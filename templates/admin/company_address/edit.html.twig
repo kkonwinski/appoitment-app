@@ -1,7 +1,13 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block title %}{{ 'view.company_address.edit'|trans }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('admin_boostrap/css/jquery-ui.min.css') }}" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ asset('admin_boostrap/css/jquery.timepicker.min.css') }}">
+
+{% endblock %}
 {% block body %}
     <h1>{{ 'view.company_address.edit'|trans }}</h1>
 
@@ -9,4 +15,11 @@
 
     <a href="{{ path('admin_company_address_list') }}" class="btn btn-outline-info">{{ 'view.company_address.back_to_company_address'|trans }}</a>
 
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('admin_boostrap/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('admin_boostrap/jquery.timepicker.min.js') }}"></script>
+
+    <script src="{{ asset('custom/js/datepicker.js') }}"></script>
 {% endblock %}
