@@ -49,25 +49,21 @@
 <div>
     {{ form_row(form.service) }}
 </div>
+
 <div class="row">
-    <label class="col-md-12">{{ form_label(form.companyOpenHours) }}</label>
-    {% for companyHour in form.companyOpenHours %}
-        <div class="openHours">
-            <div class="row">
-                <div class="col-12 d-flex">
-                    <div class="col-6">{{ form_row(companyHour.dayName) }} </div>
-                    <div class="col-3">   {{ form_row(companyHour.openFrom) }} </div>
-                    <div class="col-3">   {{ form_row(companyHour.openTo) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
+    <label class="col-md-12">{{ 'form.company_open_hours_days.label'|trans }}</label>
 
-    <div class="col-12 text-end">
-        <i class="fas fa-fw fa-plus addOpenHoursBtn"></i>
-    </div>
+
+    <ul class="companyOpenHours"
+        data-index="{{ form.companyOpenHours|length > 0 ? form.companyOpenHours|last.vars.dayName + 1 : 0 }}"
+        data-prototype="{{ form_widget(form.companyOpenHours.vars.prototype)|e('html_attr') }}"
+    ></ul>
+
 </div>
-
+<div class="d-flex justify-content-center">
+    <button type="button" class="add_item_link btn btn-outline-success" data-collection-holder-class="companyOpenHours">
+        {{  'form.company_open_hours_days.btn_new_open_company_hours'|trans }}
+    </button>
+</div>
 <button class="btn btn-outline-warning">{{ button_label|default('form.save'|trans) }}</button>
 {{ form_end(form) }}

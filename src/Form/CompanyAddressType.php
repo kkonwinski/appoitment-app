@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -85,11 +86,10 @@ class CompanyAddressType extends AbstractType
         ])
         ->add('companyOpenHours', CollectionType::class, [
                 'entry_type' => CompanyOpenHoursType::class,
-                'entry_options' => ['label' => true],
-                'allow_add' => true,
-            'label' => 'form.company_open_hours_days.label',
-        ]
-        );
+                'entry_options' => ['label' => false],
+                'label'=>false,
+                'allow_add' => true
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

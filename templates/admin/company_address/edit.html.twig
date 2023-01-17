@@ -18,8 +18,17 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script>
+
+        $(".js-timepicker").timepicker({
+            timeFormat: 'HH:mm',
+            interval: 30,
+            dynamic: true,
+            dropdown: true,
+            scrollbar: true
+        });
+    </script>
     <script src="{{ asset('admin_boostrap/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('admin_boostrap/jquery.timepicker.min.js') }}"></script>
-
     <script src="{{ asset('custom/js/datepicker.js') }}"></script>
 {% endblock %}

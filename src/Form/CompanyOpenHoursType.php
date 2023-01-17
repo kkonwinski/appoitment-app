@@ -35,14 +35,14 @@ class CompanyOpenHoursType extends AbstractType
                 'label' => 'form.employee_schedule.time_from',
                 'widget' => 'single_text',
                 'html5' => false,
-                'attr' => ['class' => 'js-timepicker ', 'autocomplete' => 'off'],
+                'attr' => ['class' => 'js-timepicker', 'autocomplete' => 'off'],
                 'required' => true
             ])
             ->add('openTo', TimeType::class, [
                 'label' => 'form.employee_schedule.time_to',
                 'widget' => 'single_text',
                 'html5' => false,
-                'attr' => ['class' => 'js-timepicker ', 'autocomplete' => 'off'],
+                'attr' => ['class' => 'js-timepicker', 'autocomplete' => 'off'],
             ])
         ;
     }

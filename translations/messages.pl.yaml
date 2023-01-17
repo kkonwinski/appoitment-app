@@ -115,6 +115,7 @@ form:
     sunday: Niedziela
     day_name: Dzień tygodnia
     label: Godziny otwarcia
+    btn_new_open_company_hours: Dodaj nowe godziny otwarcia
 
 
 exception:
