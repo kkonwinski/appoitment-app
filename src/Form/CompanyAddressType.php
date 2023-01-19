@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\CompanyAddress;
+use App\Entity\CompanyOpenHours;
 use App\Entity\Service;
 use App\Repository\ServiceRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -13,12 +14,12 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\UX\Autocomplete\DependencyInjection\AutocompleteExtension;
 
 class CompanyAddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+//TODO prolem z serviceose up -d
 
         $companyAddress = $builder->getData();
         $builder
@@ -74,15 +75,22 @@ class CompanyAddressType extends AbstractType
             'query_builder' => function (ServiceRepository $er) use ($companyAddress) {
                 return $er->createQueryBuilder('s')
                     ->orderBy('s.name', 'ASC')
-                    ->join('s.companyAddresses', 'ca')
-                    ->andWhere('ca = :companyAddress')
                     ->andWhere('s.deletedAt IS NULL')
-                    ->setParameter('companyAddress', $companyAddress);
+                    ->join('s.companyAddresses', 'ca');
+//                    ->andWhere('ca = :companyAddress')
+//                    ->setParameter('companyAddress', $companyAddress);
             },
             'choice_label' => 'name',
             'label' => 'form.company_address.service_placeholder',
             'autocomplete' => true,
-        ]);
+        ])
+            ->add('companyOpenHours', CollectionType::class, [
+                'entry_type' => CompanyOpenHoursType::class,
+                'entry_options' => ['label' => false],
+                'label' => false,
+                'allow_add' => true
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -68,12 +68,22 @@ class CompanyAddress
     #[ORM\ManyToOne(inversedBy: 'companyAddress')]
     private ?Company $company = null;
 
-    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'companyAddresses', cascade: ['persist','remove'])]
+    #[ORM\OneToMany(
+        mappedBy: 'companyAddress',
+        targetEntity: CompanyOpenHours::class,
+        cascade: ['persist','remove'],
+        orphanRemoval: true
+    )]
+    #[Valid]
+    private Collection $companyOpenHours;
+
+    #[ORM\OneToMany(mappedBy: 'companyAddress', targetEntity: Service::class, orphanRemoval: true)]
     private Collection $service;
 
     public function __construct()
     {
         $this->companyAdditionalInfos = new ArrayCollection();
+        $this->companyOpenHours = new ArrayCollection();
         $this->service = new ArrayCollection();
     }
 
@@ -186,6 +196,36 @@ class CompanyAddress
     }
 
     /**
+     * @return Collection<int, CompanyOpenHours>
+     */
+    public function getCompanyOpenHours(): Collection
+    {
+        return $this->companyOpenHours;
+    }
+
+    public function addCompanyOpenHour(CompanyOpenHours $companyOpenHour): self
+    {
+        if (!$this->companyOpenHours->contains($companyOpenHour)) {
+            $this->companyOpenHours->add($companyOpenHour);
+            $companyOpenHour->setCompanyAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompanyOpenHour(CompanyOpenHours $companyOpenHour): self
+    {
+        if ($this->companyOpenHours->removeElement($companyOpenHour)) {
+            // set the owning side to null (unless already changed)
+            if ($companyOpenHour->getCompanyAddress() === $this) {
+                $companyOpenHour->setCompanyAddress(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection<int, Service>
      */
     public function getService(): Collection
@@ -197,6 +237,7 @@ class CompanyAddress
     {
         if (!$this->service->contains($service)) {
             $this->service->add($service);
+            $service->setCompanyAddress($this);
         }
 
         return $this;
@@ -204,7 +245,12 @@ class CompanyAddress
 
     public function removeService(Service $service): self
     {
-        $this->service->removeElement($service);
+        if ($this->service->removeElement($service)) {
+            // set the owning side to null (unless already changed)
+            if ($service->getCompanyAddress() === $this) {
+                $service->setCompanyAddress(null);
+            }
+        }
 
         return $this;
     }

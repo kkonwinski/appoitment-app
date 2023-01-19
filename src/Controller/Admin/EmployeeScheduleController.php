@@ -28,7 +28,6 @@ class EmployeeScheduleController extends AbstractController
         User $user,
         EmployeeScheduleRepository $employeeScheduleRepository,
         Request $request,
-
     ): Response {
 
 
@@ -53,6 +52,10 @@ class EmployeeScheduleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$form->getData()->getTimeTo()) {
+                $form->getData()->setTimeTo(new \DateTime('23:59:59'));
+            }
+
             $employeeSchedule->setUser($user);
             $employeeScheduleRepository->save($employeeSchedule, true);
 
@@ -92,10 +95,9 @@ class EmployeeScheduleController extends AbstractController
             );
 
             return $this->render('admin/employee_schedule/list.html.twig', [
-           'employeeSchedules' => $employeeSchedules,
+            'employeeSchedules' => $employeeSchedules,
             'user' => $employeeSchedule->getUser(),
-        ]);
-
+            ]);
         }
 
         return $this->renderForm('admin/employee_schedule/edit.html.twig', [

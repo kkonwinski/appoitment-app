@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Company;
 use App\Entity\Service;
+use App\Entity\User;
 use App\Form\ServiceType;
 use App\Repository\ServiceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -15,12 +17,17 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_OWNER')]
 class ServiceController extends AbstractController
 {
-    #[Route('', name: 'list', methods: ['GET'])]
+    #[Route('/list/{slug}', name: 'list', methods: ['GET'])]
     public function list(ServiceRepository $serviceRepository): Response
     {
-        return $this->render('admin/service/list.html.twig', [
-            'services' => $serviceRepository->findBy(['deletedAt' => null]),
-        ]);
+        $services = $serviceRepository->findByCompany($this->getUser()->getCompany());
+
+        return $this->render(
+            'admin/service/list.html.twig',
+            [
+            'services' => $services
+            ]
+        );
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
@@ -31,9 +38,17 @@ class ServiceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $serviceRepository->save($service, true);
+            $service->addCompany($this->getUser()->getCompany());
+            $service->save($service, true);
+            $services = $serviceRepository->findBy(['companies'=>$this->getUser()->getCompany()]);
 
-            return $this->redirectToRoute('admin_service_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'admin_service_list',
+                [
+                'slug' => $this->getUser()->getCompany()->getSlug()
+                ],
+                Response::HTTP_SEE_OTHER
+            );
         }
 
         return $this->renderForm('admin/service/new.html.twig', [
@@ -53,7 +68,6 @@ class ServiceController extends AbstractController
 
             return $this->redirectToRoute('admin_service_list', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('admin/service/edit.html.twig', [
             'service' => $service,
             'form' => $form,

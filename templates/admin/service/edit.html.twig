@@ -7,6 +7,6 @@
 
     {{ include('admin/service/_partials/_form.html.twig', {'button_label': 'view.edit'|trans}) }}
 
-    <a href="{{ path('admin_service_list') }}" class="btn btn-outline-info">{{ 'view.service.back_to_service_list'|trans }}</a>
+    <a href="{{ path('admin_service_list',{'slug':}) }}" class="btn btn-outline-info">{{ 'view.service.back_to_service_list'|trans }}</a>
 
 {% endblock %}

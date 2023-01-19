@@ -19,11 +19,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     chmod +x /usr/local/bin/composer
 
 # install node.js
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_19.x | bash - && \
   	apt-get install -y nodejs
 RUN curl -sS https://get.symfony.com/cli/installer | bash
-
-
-#RUN php bin/console d:s:u --force
 
 RUN curl -sS https://get.symfony.com/cli/installer | bash

@@ -34,10 +34,6 @@ class Service
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    #[NotBlank(message: 'entity.service.not_blank')]
-    private ?string $name = null;
-
     #[ORM\Column]
     #[Regex(pattern: "/\d+/")]
     private ?int $duration = 0;
@@ -50,29 +46,21 @@ class Service
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\ManyToMany(targetEntity: CompanyAddress::class, mappedBy: 'service',cascade: ['persist','remove'])]
-    private Collection $companyAddresses;
+    #[ORM\ManyToMany(targetEntity: ServiceDictionary::class, mappedBy: 'service')]
+    private Collection $serviceDictionaries;
+
+    #[ORM\ManyToOne(inversedBy: 'service')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CompanyAddress $companyAddress = null;
 
     public function __construct()
     {
-        $this->companyAddresses = new ArrayCollection();
+        $this->serviceDictionaries = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function getDuration(): ?int
@@ -111,28 +99,40 @@ class Service
     }
 
     /**
-     * @return Collection<int, CompanyAddress>
+     * @return Collection<int, ServiceDictionary>
      */
-    public function getCompanyAddresses(): Collection
+    public function getServiceDictionaries(): Collection
     {
-        return $this->companyAddresses;
+        return $this->serviceDictionaries;
     }
 
-    public function addCompanyAddress(CompanyAddress $companyAddress): self
+    public function addServiceDictionary(ServiceDictionary $serviceDictionary): self
     {
-        if (!$this->companyAddresses->contains($companyAddress)) {
-            $this->companyAddresses->add($companyAddress);
-            $companyAddress->addService($this);
+        if (!$this->serviceDictionaries->contains($serviceDictionary)) {
+            $this->serviceDictionaries->add($serviceDictionary);
+            $serviceDictionary->addService($this);
         }
 
         return $this;
     }
 
-    public function removeCompanyAddress(CompanyAddress $companyAddress): self
+    public function removeServiceDictionary(ServiceDictionary $serviceDictionary): self
     {
-        if ($this->companyAddresses->removeElement($companyAddress)) {
-            $companyAddress->removeService($this);
+        if ($this->serviceDictionaries->removeElement($serviceDictionary)) {
+            $serviceDictionary->removeService($this);
         }
+
+        return $this;
+    }
+
+    public function getCompanyAddress(): ?CompanyAddress
+    {
+        return $this->companyAddress;
+    }
+
+    public function setCompanyAddress(?CompanyAddress $companyAddress): self
+    {
+        $this->companyAddress = $companyAddress;
 
         return $this;
     }

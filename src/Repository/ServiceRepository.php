@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\Service;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,6 +39,20 @@ class ServiceRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+//get all services by company
+    public function findByCompany(Company $company)
+    {
+
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.companies', 'c')
+            ->andWhere('c = :company')
+            ->andWhere('s.deletedAt IS NULL')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 
 //    /**
 //     * @return Service[] Returns an array of Service objects
