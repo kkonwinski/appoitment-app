@@ -4,7 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\CompanyAdditionalInfo;
 use App\Entity\CompanyAddress;
+use App\Entity\CompanyOpenHours;
 use App\Form\CompanyAddressType;
+use App\Form\CompanyOpenHoursType;
+use App\Form\TestFormType;
 use App\Repository\CompanyAddressRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -32,8 +35,10 @@ class CompanyAddressController extends AbstractController
     public function new(Request $request, CompanyAddressRepository $companyAddressRepository): Response
     {
         $companyAddress = new CompanyAddress();
-        $companyAdditionalInfo = new CompanyAdditionalInfo();
-        $companyAddress->addCompanyAdditionalInfo($companyAdditionalInfo);
+//        $companyAdditionalInfo = new CompanyAdditionalInfo();
+//        $companyHours = new CompanyOpenHours();
+//        $companyAddress->addCompanyOpenHour($companyHours);
+//        $companyAddress->addCompanyAdditionalInfo($companyAdditionalInfo);
 
         $form = $this->createForm(CompanyAddressType::class, $companyAddress);
         $form->handleRequest($request);
@@ -43,11 +48,12 @@ class CompanyAddressController extends AbstractController
             $form->isValid()
         ) {
             $companyAddress->setCompany($this->getUser()->getCompany());
-            $companyAddress->addCompanyOpenHour($this->getUser()->getCompany());
+//            $companyAddress->addCompanyOpenHour($this->getUser()->getCompany());
             $companyAddressRepository->save($companyAddress, true);
 
             return $this->redirectToRoute('admin_company_address_list', [], Response::HTTP_SEE_OTHER);
         }
+
         return $this->renderForm('admin/company_address/new.html.twig', [
             'companyAddress' => $companyAddress,
             'form' => $form,

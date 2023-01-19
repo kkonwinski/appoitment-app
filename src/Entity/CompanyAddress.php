@@ -68,22 +68,23 @@ class CompanyAddress
     #[ORM\ManyToOne(inversedBy: 'companyAddress')]
     private ?Company $company = null;
 
-    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'companyAddresses', cascade: ['persist','remove'])]
-    private Collection $service;
-
     #[ORM\OneToMany(
         mappedBy: 'companyAddress',
         targetEntity: CompanyOpenHours::class,
         cascade: ['persist','remove'],
         orphanRemoval: true
     )]
+    #[Valid]
     private Collection $companyOpenHours;
+
+    #[ORM\OneToMany(mappedBy: 'companyAddress', targetEntity: Service::class, orphanRemoval: true)]
+    private Collection $service;
 
     public function __construct()
     {
         $this->companyAdditionalInfos = new ArrayCollection();
-        $this->service = new ArrayCollection();
         $this->companyOpenHours = new ArrayCollection();
+        $this->service = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,30 +196,6 @@ class CompanyAddress
     }
 
     /**
-     * @return Collection<int, Service>
-     */
-    public function getService(): Collection
-    {
-        return $this->service;
-    }
-
-    public function addService(Service $service): self
-    {
-        if (!$this->service->contains($service)) {
-            $this->service->add($service);
-        }
-
-        return $this;
-    }
-
-    public function removeService(Service $service): self
-    {
-        $this->service->removeElement($service);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, CompanyOpenHours>
      */
     public function getCompanyOpenHours(): Collection
@@ -242,6 +219,36 @@ class CompanyAddress
             // set the owning side to null (unless already changed)
             if ($companyOpenHour->getCompanyAddress() === $this) {
                 $companyOpenHour->setCompanyAddress(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Service>
+     */
+    public function getService(): Collection
+    {
+        return $this->service;
+    }
+
+    public function addService(Service $service): self
+    {
+        if (!$this->service->contains($service)) {
+            $this->service->add($service);
+            $service->setCompanyAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Service $service): self
+    {
+        if ($this->service->removeElement($service)) {
+            // set the owning side to null (unless already changed)
+            if ($service->getCompanyAddress() === $this) {
+                $service->setCompanyAddress(null);
             }
         }
 

@@ -65,6 +65,8 @@
                 {% else %}
                     <a class="collapse-item" href="{{ path('admin_company_address_list') }}">{{ 'view.company_address.list'|trans }}</a>
                 {% endif %}
+                <a class="collapse-item" href="{{ path('admin_service_list',{ 'slug': app.user.company }) }}">{{ 'view.service.list'|trans }}</a>
+
             </div>
         </div>
     </li>

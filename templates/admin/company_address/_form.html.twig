@@ -55,8 +55,13 @@
 
 
     <ul class="companyOpenHours"
-        data-index="{{ form.companyOpenHours|length > 0 ? form.companyOpenHours|last.vars.dayName + 1 : 0 }}"
+        data-index="{{ form.companyOpenHours|length > 0 ? form.companyOpenHours|last.vars.name + 1 : 0 }}"
         data-prototype="{{ form_widget(form.companyOpenHours.vars.prototype)|e('html_attr') }}"
+        {% for coh in form.companyOpenHours %}
+            <li>{{ form_row(coh.dayName) }}</li>
+            <li>{{ form_row(coh.openFrom) }}</li>
+            <li>{{ form_row(coh.openTo) }}</li>
+        {% endfor %}
     ></ul>
 
 </div>

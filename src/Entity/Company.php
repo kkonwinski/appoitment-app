@@ -49,7 +49,6 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class)]
     private Collection $companyAddress;
 
-
     public function __construct()
     {
         $this->user = new ArrayCollection();
@@ -144,7 +143,5 @@ class Company
 
         return $this;
     }
-
-
 
 }

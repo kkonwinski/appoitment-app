@@ -51,6 +51,7 @@ class CompanyOpenHoursType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CompanyOpenHours::class,
+            'validation_groups' => ['Default', 'CompanyOpenHours']
         ]);
     }
 }
