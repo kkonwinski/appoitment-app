@@ -6,15 +6,13 @@ use App\Repository\CompanyAddressRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation\SoftDeleteable;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints\Valid;
 
-#[SoftDeleteable(fieldName: "deletedAt", timeAware: false)]
 #[ORM\Entity(repositoryClass: CompanyAddressRepository::class)]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class CompanyAddress
 {
     /**
@@ -29,67 +27,74 @@ class CompanyAddress
      */
     use SoftDeleteableEntity;
 
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
-    protected ?string $city = null;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
-    #[Regex(pattern: '/^[0-9]{2}-[0-9]{3}$/i', message: 'entity.company_address.assert.post_code')]
-    private ?string $postCode = null;
+    #[ORM\Column(length: 255)]
+    private ?string $city = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $country = null;
+    #[ORM\Column(length: 255)]
+    private ?string $zipCode = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
-    private ?string $street = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[NotBlank(message: 'entity.company_address.assert.not_blank')]
-    private ?string $buildingNumber = null;
-
-
-
-    #[ORM\OneToMany(
-        mappedBy: 'companyAddress',
-        targetEntity: CompanyAdditionalInfo::class,
-        cascade: ['persist','remove']
-    )]
-    #[Valid]
-    private Collection $companyAdditionalInfos;
-
-    #[ORM\ManyToOne(inversedBy: 'companyAddress')]
+    #[ORM\ManyToOne(inversedBy: 'companyAddresses')]
     private ?Company $company = null;
 
-    #[ORM\OneToMany(
-        mappedBy: 'companyAddress',
-        targetEntity: CompanyOpenHours::class,
-        cascade: ['persist','remove'],
-        orphanRemoval: true
-    )]
-    #[Valid]
-    private Collection $companyOpenHours;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $phone = null;
 
-    #[ORM\OneToMany(mappedBy: 'companyAddress', targetEntity: Service::class, orphanRemoval: true)]
-    private Collection $service;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
 
-    public function __construct()
-    {
-        $this->companyAdditionalInfos = new ArrayCollection();
-        $this->companyOpenHours = new ArrayCollection();
-        $this->service = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'companyAddress')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CountryDictionary $countryDictionary = null;
+
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @var string|null
+     *
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    #[ORM\Column(length: 128, unique: true)]
+    #[Gedmo\Slug(fields: ['name'])]
+    private $slug;
+
+    #[ORM\OneToOne(mappedBy: 'companyAddress', cascade: ['persist', 'remove'])]
+    private ?CompanyAddressAdditionalInfo $companyAddressAdditionalInfo = null;
+
+    #[ORM\OneToMany(mappedBy: 'companyAddress', targetEntity: CompanyOpenHours::class)]
+    private Collection $companyOpenHours;
+
+    #[ORM\ManyToOne(inversedBy: 'companyAddress')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ProvinceDictionary $provinceDictionary = null;
+
+    public function __construct()
+    {
+        $this->companyOpenHours = new ArrayCollection();
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     public function getCity(): ?string
@@ -97,88 +102,21 @@ class CompanyAddress
         return $this->city;
     }
 
-    public function setCity(?string $city): self
+    public function setCity(string $city): self
     {
         $this->city = $city;
 
         return $this;
     }
 
-    public function getPostCode(): ?string
+    public function getZipCode(): ?string
     {
-        return $this->postCode;
+        return $this->zipCode;
     }
 
-    public function setPostCode(?string $postCode): self
+    public function setZipCode(string $zipCode): self
     {
-        $this->postCode = $postCode;
-
-        return $this;
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?string $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getStreet(): ?string
-    {
-        return $this->street;
-    }
-
-    public function setStreet(?string $street): self
-    {
-        $this->street = $street;
-
-        return $this;
-    }
-
-    public function getBuildingNumber(): ?string
-    {
-        return $this->buildingNumber;
-    }
-
-    public function setBuildingNumber(?string $buildingNumber): self
-    {
-        $this->buildingNumber = $buildingNumber;
-
-        return $this;
-    }
-
-
-    /**
-     * @return Collection<int, CompanyAdditionalInfo>
-     */
-    public function getCompanyAdditionalInfos(): Collection
-    {
-        return $this->companyAdditionalInfos;
-    }
-
-    public function addCompanyAdditionalInfo(CompanyAdditionalInfo $companyAdditionalInfo): self
-    {
-        if (!$this->companyAdditionalInfos->contains($companyAdditionalInfo)) {
-            $this->companyAdditionalInfos->add($companyAdditionalInfo);
-            $companyAdditionalInfo->setCompanyAddress($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompanyAdditionalInfo(CompanyAdditionalInfo $companyAdditionalInfo): self
-    {
-        if ($this->companyAdditionalInfos->removeElement($companyAdditionalInfo)) {
-            // set the owning side to null (unless already changed)
-            if ($companyAdditionalInfo->getCompanyAddress() === $this) {
-                $companyAdditionalInfo->setCompanyAddress(null);
-            }
-        }
+        $this->zipCode = $zipCode;
 
         return $this;
     }
@@ -191,6 +129,69 @@ class CompanyAddress
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getCountryDictionary(): ?CountryDictionary
+    {
+        return $this->countryDictionary;
+    }
+
+    public function setCountryDictionary(?CountryDictionary $countryDictionary): self
+    {
+        $this->countryDictionary = $countryDictionary;
+
+        return $this;
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    public function getCompanyAddressAdditionalInfo(): ?CompanyAddressAdditionalInfo
+    {
+        return $this->companyAddressAdditionalInfo;
+    }
+
+    public function setCompanyAddressAdditionalInfo(?CompanyAddressAdditionalInfo $companyAddressAdditionalInfo): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($companyAddressAdditionalInfo === null && $this->companyAddressAdditionalInfo !== null) {
+            $this->companyAddressAdditionalInfo->setCompanyAddress(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($companyAddressAdditionalInfo !== null && $companyAddressAdditionalInfo->getCompanyAddress() !== $this) {
+            $companyAddressAdditionalInfo->setCompanyAddress($this);
+        }
+
+        $this->companyAddressAdditionalInfo = $companyAddressAdditionalInfo;
 
         return $this;
     }
@@ -225,32 +226,14 @@ class CompanyAddress
         return $this;
     }
 
-    /**
-     * @return Collection<int, Service>
-     */
-    public function getService(): Collection
+    public function getProvinceDictionary(): ?ProvinceDictionary
     {
-        return $this->service;
+        return $this->provinceDictionary;
     }
 
-    public function addService(Service $service): self
+    public function setProvinceDictionary(?ProvinceDictionary $provinceDictionary): self
     {
-        if (!$this->service->contains($service)) {
-            $this->service->add($service);
-            $service->setCompanyAddress($this);
-        }
-
-        return $this;
-    }
-
-    public function removeService(Service $service): self
-    {
-        if ($this->service->removeElement($service)) {
-            // set the owning side to null (unless already changed)
-            if ($service->getCompanyAddress() === $this) {
-                $service->setCompanyAddress(null);
-            }
-        }
+        $this->provinceDictionary = $provinceDictionary;
 
         return $this;
     }

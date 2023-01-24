@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -21,8 +22,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    use Employee;
-
     /**
      * Hook timestampable behavior
      * updates createdAt, updatedAt fields
@@ -35,7 +34,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     use SoftDeleteableEntity;
 
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -47,35 +45,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    #[ORM\Column(type: 'boolean')]
-    private bool $isVerified = false;
-
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
+
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSchedule::class)]
+    private Collection $employeeSchedules;
+
     public function __construct()
     {
         $this->employeeSchedules = new ArrayCollection();
     }
 
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-    public function getIsVerified(): bool
-    {
-        return $this->isVerified;
-    }
-
-    public function setIsVerified(bool $isVerified): self
-    {
-        $this->isVerified = $isVerified;
-
-        return $this;
     }
     public function getEmail(): ?string
     {
@@ -142,8 +131,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function isIsVerified(): ?bool
+    public function getType(): ?string
     {
-        return $this->isVerified;
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EmployeeSchedule>
+     */
+    public function getEmployeeSchedules(): Collection
+    {
+        return $this->employeeSchedules;
+    }
+
+    public function addEmployeeSchedule(EmployeeSchedule $employeeSchedule): self
+    {
+        if (!$this->employeeSchedules->contains($employeeSchedule)) {
+            $this->employeeSchedules->add($employeeSchedule);
+            $employeeSchedule->setEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmployeeSchedule(EmployeeSchedule $employeeSchedule): self
+    {
+        if ($this->employeeSchedules->removeElement($employeeSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($employeeSchedule->getEmployee() === $this) {
+                $employeeSchedule->setEmployee(null);
+            }
+        }
+
+        return $this;
     }
 }
