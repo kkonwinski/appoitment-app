@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Gedmo\Timestampable\Traits\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: CompanyAddressRepository::class)]
@@ -41,8 +40,6 @@ class CompanyAddress
     #[ORM\Column(length: 255)]
     private ?string $zipCode = null;
 
-    #[ORM\ManyToOne(inversedBy: 'companyAddresses')]
-    private ?Company $company = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
@@ -79,6 +76,9 @@ class CompanyAddress
     #[ORM\ManyToOne(inversedBy: 'companyAddress')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ProvinceDictionary $provinceDictionary = null;
+
+    #[ORM\ManyToOne(inversedBy: 'companyAddresses')]
+    private ?Company $company = null;
 
     public function __construct()
     {
@@ -117,18 +117,6 @@ class CompanyAddress
     public function setZipCode(string $zipCode): self
     {
         $this->zipCode = $zipCode;
-
-        return $this;
-    }
-
-    public function getCompany(): ?Company
-    {
-        return $this->company;
-    }
-
-    public function setCompany(?Company $company): self
-    {
-        $this->company = $company;
 
         return $this;
     }
@@ -234,6 +222,18 @@ class CompanyAddress
     public function setProvinceDictionary(?ProvinceDictionary $provinceDictionary): self
     {
         $this->provinceDictionary = $provinceDictionary;
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
 
         return $this;
     }

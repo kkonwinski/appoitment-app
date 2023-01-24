@@ -35,12 +35,6 @@ class Company
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class, orphanRemoval: true)]
-    private Collection $companyAddress;
-
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class)]
-    private Collection $companyAddresses;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
@@ -75,9 +69,11 @@ class Company
     #[ORM\JoinColumn(nullable: false)]
     private ?CountryDictionary $countryDictionary = null;
 
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyAddress::class)]
+    private Collection $companyAddresses;
+
     public function __construct()
     {
-        $this->companyAddress = new ArrayCollection();
         $this->companyAddresses = new ArrayCollection();
     }
 
@@ -96,44 +92,6 @@ class Company
         $this->name = $name;
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, CompanyAddress>
-     */
-    public function getCompanyAddress(): Collection
-    {
-        return $this->companyAddress;
-    }
-
-    public function addCompanyAddress(CompanyAddress $companyAddress): self
-    {
-        if (!$this->companyAddress->contains($companyAddress)) {
-            $this->companyAddress->add($companyAddress);
-            $companyAddress->setCompany($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompanyAddress(CompanyAddress $companyAddress): self
-    {
-        if ($this->companyAddress->removeElement($companyAddress)) {
-            // set the owning side to null (unless already changed)
-            if ($companyAddress->getCompany() === $this) {
-                $companyAddress->setCompany(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CompanyAddress>
-     */
-    public function getCompanyAddresses(): Collection
-    {
-        return $this->companyAddresses;
     }
 
     public function getCity(): ?string
@@ -219,6 +177,36 @@ class Company
     public function setCountryDictionary(?CountryDictionary $countryDictionary): self
     {
         $this->countryDictionary = $countryDictionary;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompanyAddress>
+     */
+    public function getCompanyAddresses(): Collection
+    {
+        return $this->companyAddresses;
+    }
+
+    public function addCompanyAddress(CompanyAddress $companyAddress): self
+    {
+        if (!$this->companyAddresses->contains($companyAddress)) {
+            $this->companyAddresses->add($companyAddress);
+            $companyAddress->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompanyAddress(CompanyAddress $companyAddress): self
+    {
+        if ($this->companyAddresses->removeElement($companyAddress)) {
+            // set the owning side to null (unless already changed)
+            if ($companyAddress->getCompany() === $this) {
+                $companyAddress->setCompany(null);
+            }
+        }
 
         return $this;
     }
