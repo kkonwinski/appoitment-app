@@ -5,20 +5,8 @@ namespace App\Entity;
 use App\Repository\EmployeeScheduleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Translation\TranslatableMessage;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-use function Symfony\Component\Translation\t;
-
-/**
- * @ORM\Entity
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false, hardDelete=true)
- */
-#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false, hardDelete: true)]
 #[ORM\Entity(repositoryClass: EmployeeScheduleRepository::class)]
 class EmployeeSchedule
 {
@@ -28,79 +16,51 @@ class EmployeeSchedule
      */
     use TimestampableEntity;
 
-    /**
-     * Hook SoftDeleteable behavior
-     * updates deletedAt field
-     */
-    use SoftDeleteableEntity;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'employeeSchedules')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateFrom = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: 'entity.employee_schedule.assert.not_blank')]
-    private ?\DateTimeInterface $dayFrom = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $dayTo = null;
+    private ?\DateTimeInterface $dateTo = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    #[Assert\NotBlank(message: 'entity.employee_schedule.assert.not_blank')]
     private ?\DateTimeInterface $timeFrom = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $timeTo = null;
 
-    #[ORM\Column]
-    private ?bool $repeatInfinity = false;
-
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "entity.employee_schedule.assert.not_blank")]
-    private ?string $title = null;
+    #[ORM\ManyToOne(inversedBy: 'employeeSchedules')]
+    private ?User $employee = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public function getDateFrom(): ?\DateTimeInterface
     {
-        return $this->user;
+        return $this->dateFrom;
     }
 
-    public function setUser(?User $user): self
+    public function setDateFrom(\DateTimeInterface $dateFrom): self
     {
-        $this->user = $user;
+        $this->dateFrom = $dateFrom;
 
         return $this;
     }
 
-    public function getDayFrom(): ?\DateTimeInterface
+    public function getDateTo(): ?\DateTimeInterface
     {
-        return $this->dayFrom;
+        return $this->dateTo;
     }
 
-    public function setDayFrom(?\DateTimeInterface $dayFrom): self
+    public function setDateTo(\DateTimeInterface $dateTo): self
     {
-        $this->dayFrom = $dayFrom;
-
-        return $this;
-    }
-
-    public function getDayTo(): ?\DateTimeInterface
-    {
-        return $this->dayTo;
-    }
-
-    public function setDayTo(?\DateTimeInterface $dayTo): self
-    {
-        $this->dayTo = $dayTo;
+        $this->dateTo = $dateTo;
 
         return $this;
     }
@@ -110,7 +70,7 @@ class EmployeeSchedule
         return $this->timeFrom;
     }
 
-    public function setTimeFrom(?\DateTimeInterface $timeFrom): self
+    public function setTimeFrom(\DateTimeInterface $timeFrom): self
     {
         $this->timeFrom = $timeFrom;
 
@@ -122,72 +82,21 @@ class EmployeeSchedule
         return $this->timeTo;
     }
 
-    public function setTimeTo(?\DateTimeInterface $timeTo): self
+    public function setTimeTo(\DateTimeInterface $timeTo): self
     {
         $this->timeTo = $timeTo;
 
         return $this;
     }
 
-    public function isRepeatInfinity(): ?bool
+    public function getEmployee(): ?User
     {
-        return $this->repeatInfinity;
+        return $this->employee;
     }
 
-    public function setRepeatInfinity(bool $repeatInfinity): self
+    public function setEmployee(?User $employee): self
     {
-        $this->repeatInfinity = $repeatInfinity;
-
-        return $this;
-    }
-
-    //create function check if dayTo is greater than dayFrom, if not add violation
-
-    /**
-     * @throws \Exception
-     */
-    #[Assert\Callback]
-    public function validateDay(ExecutionContextInterface $context, $payload): void
-    {
-        //if dayFrom is less than dayTo, if not add violation
-        if ($this->dayFrom > $this->dayTo) {
-            $context->buildViolation('entity.employee_schedule.assert.day_from_greater_than_day_to')
-                ->setTranslationDomain('validators')
-                ->atPath('dayFrom')
-                ->addViolation();
-        }
-
-        //if dayFrom is less than day now, if not add violation
-
-        if ($this->dayFrom && $this->dayFrom < new \DateTime($this->dayFrom->format('Y-m-d'))) {
-            $context->buildViolation('entity.employee_schedule.assert.day_from_less_than_day_now')
-                ->setTranslationDomain('validators')
-                ->atPath('dayFrom')
-                ->addViolation();
-        }
-    }
-
-    //create function check if timeTo is greater than timeFrom, if not add violation
-    #[Assert\Callback]
-    public function validateTime(ExecutionContextInterface $context, $payload): void
-    {
-        //if timeFrom is less than timeTo, if not add violation
-        if ($this->timeTo && $this->timeFrom > $this->timeTo) {
-            $context->buildViolation('entity.employee_schedule.assert.time_from_greater_than_time_to')
-                ->setTranslationDomain('validators')
-                ->atPath('timeFrom')
-                ->addViolation();
-        }
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
+        $this->employee = $employee;
 
         return $this;
     }

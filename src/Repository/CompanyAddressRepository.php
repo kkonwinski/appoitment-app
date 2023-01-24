@@ -3,11 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\CompanyAddress;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * @extends ServiceEntityRepository<CompanyAddress>
@@ -40,38 +37,6 @@ class CompanyAddressRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
-    }
-    public function findCompaniesAddressesByCompany($company)
-    {
-         return  $this->createQueryBuilder('c')
-            ->andWhere('c.company = :company')
-            ->setParameter('company', $company)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    /**
-     * @param CompanyAddress $companyAddress
-     * @param User $user
-     * @return float|int|mixed|string
-     * @throws NonUniqueResultException
-     */
-    public function checkIfCompanyAddressBelongsToUser(CompanyAddress $companyAddress, User $user): mixed
-    {
-        $qb = $this->createQueryBuilder('ca')
-            ->leftJoin('ca.company', 'c')
-            ->leftJoin('c.user', 'u')
-            ->andWhere('ca = :companyAddress')
-            ->andWhere('u = :user')
-            ->setParameter('companyAddress', $companyAddress)
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getOneOrNullResult();
-        if (!$qb) {
-            throw new AccessDeniedHttpException('Company Address does not belong to user');
-        }
-        return $qb;
     }
 
 //    /**
