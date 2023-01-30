@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Gedmo\Timestampable\Traits\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -59,6 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
+        $this->setType();
         $this->employeeSchedules = new ArrayCollection();
     }
 
@@ -138,7 +138,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->employeeSchedules;
     }
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
 
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
     public function addEmployeeSchedule(EmployeeSchedule $employeeSchedule): self
     {
         if (!$this->employeeSchedules->contains($employeeSchedule)) {
@@ -151,11 +161,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeEmployeeSchedule(EmployeeSchedule $employeeSchedule): self
     {
-        if ($this->employeeSchedules->removeElement($employeeSchedule)) {
-            // set the owning side to null (unless already changed)
-            if ($employeeSchedule->getEmployee() === $this) {
-                $employeeSchedule->setEmployee(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->employeeSchedules->removeElement($employeeSchedule) && $employeeSchedule->getEmployee() === $this) {
+            $employeeSchedule->setEmployee(null);
         }
 
         return $this;

@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\CompanyAddressAddiotionalInfoRepository;
+use App\Repository\CompanyAddressAdditionalInfoRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: CompanyAddressAddiotionalInfoRepository::class)]
+#[ORM\Entity(repositoryClass: CompanyAddressAdditionalInfoRepository::class)]
 class CompanyAddressAdditionalInfo
 {
     /**

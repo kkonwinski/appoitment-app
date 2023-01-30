@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method CompanyAddressAdditionalInfo[]    findAll()
  * @method CompanyAddressAdditionalInfo[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CompanyAddressAddiotionalInfoRepository extends ServiceEntityRepository
+class CompanyAddressAdditionalInfoRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

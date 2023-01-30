@@ -19,11 +19,11 @@ class ProvinceDictionary
     private ?string $name = null;
 
 
-//    #[ORM\OneToOne(mappedBy: 'province')]
-//    private ?Company $company = null;
-//
-//    #[ORM\OneToMany(mappedBy: 'provinceDictionary', targetEntity: CompanyAddress::class)]
-//    private Collection $companyAddress;
+    #[ORM\OneToOne(mappedBy: 'province')]
+    private ?Company $company = null;
+
+    #[ORM\OneToMany(mappedBy: 'provinceDictionary', targetEntity: CompanyAddress::class)]
+    private Collection $companyAddress;
 
     public function __construct()
     {
